@@ -8,6 +8,8 @@ export interface NavItem {
   icon?: keyof typeof Icons;
   label?: string;
   description?: string;
+  subTitle?: string;
+  color?: string;
 }
 
 export interface NavItemWithChildren extends NavItem {

@@ -1,4 +1,4 @@
-import DashboardNav from '@/components/shared/dashboard-nav';
+import DashboardNav from '@/components/shared/header-nav';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { navItems } from '@/constants/data';
 import { Dispatch, SetStateAction } from 'react';

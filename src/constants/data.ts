@@ -2,47 +2,49 @@ import { NavItem } from '@/types';
 
 export const navItems: NavItem[] = [
   {
-    title: 'Trang chủ',
+    title: 'Custom giày',
+    subTitle: 'Sản phẩm nguyên bản',
     href: '/',
-    icon: 'dashboard',
-    label: 'Dashboard'
+    icon: 'shoes',
+    label: 'shoes',
+    color: 'yellow'
   },
   {
-    title: 'Học sinh',
-    href: '/student',
-    icon: 'user',
-    label: 'Student'
+    title: 'Cửa hàng',
+    subTitle: 'Sản phẩm custom',
+    href: '/',
+    icon: 'store',
+    label: 'Store',
+    color: '#1ba6f9'
   },
   {
-    title: 'Điểm danh',
-    href: '/checkin-student',
-    icon: 'clipboardCheck',
-    label: 'Checkin'
-  },
-  {
-    title: 'Quản lý điểm danh',
-    href: '/checkin-manager',
-    icon: 'notepadText',
-    label: 'ManagerCheckin'
-  },
-  {
-    title: 'Tư vấn',
-    href: '/advisory',
-    icon: 'phone',
-    label: 'Advisory'
-  },
-  {
-    title: 'Quản lý doanh thu',
-    href: '/revenue',
-    icon: 'wallet',
-    label: 'Revenue'
-  },
+    title: 'Thương hiệu',
+    subTitle: 'Các thương hiệu',
+    href: '/',
+    icon: 'crown',
+    label: 'crown',
+    color: '#f20e45'
+  }
+];
 
+export const subNavItems: NavItem[] = [
   {
-    title: 'Thoát',
-    href: '/login',
-    icon: 'login',
-    label: 'Login'
+    title: ' Design',
+    href: '/',
+    icon: 'pencil',
+    label: 'pencil'
+  },
+  {
+    title: 'Sản phẩm yêu thích',
+    href: '/',
+    icon: 'bookHeart',
+    label: 'bookHeart'
+  },
+  {
+    title: 'Hỗ trợ',
+    href: '/',
+    icon: 'headset',
+    label: 'headset'
   }
 ];
 
