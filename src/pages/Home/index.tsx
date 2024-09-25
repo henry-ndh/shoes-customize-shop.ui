@@ -1,6 +1,6 @@
 import BasePages from '@/components/shared/base-pages.js';
 import Promo from './components/Promo';
-export default function HomePage() {
+export default function ShopPage() {
   return (
     <>
       <Promo />

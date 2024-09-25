@@ -28,7 +28,7 @@ const Promo = () => {
                 key={index}
                 className="promo-item hidden items-center text-[14px] max-2xl:text-[12px] md:flex"
               >
-                <Icon className="mr-2 stroke-[#ffbf00]" />
+                <Icon className="mr-2 stroke-[#ffbf00] " strokeWidth={2} />
                 <span className="font-semibold">{item.title}</span>
               </li>
             );
@@ -36,7 +36,7 @@ const Promo = () => {
           <li className="promo-item flex items-center text-[16px] max-2xl:text-[12px] md:hidden">
             <span className="mr-2"></span>
             <span className="font-bold">
-              Giảm 10% học phí khi đăng ký khóa học mới
+              Hoàn tiền 100% nếu không đúng mẫu thiết kế
             </span>
           </li>
         </ul>

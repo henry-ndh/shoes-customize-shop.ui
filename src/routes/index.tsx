@@ -5,6 +5,7 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 const DashboardLayout = lazy(() => import('@/components/layout/layout'));
 const SignInPage = lazy(() => import('@/pages/auth/signin'));
 const HomePage = lazy(() => import('@/pages/Home/index'));
+const ShopPage = lazy(() => import('@/pages/ShopPage/index'));
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -22,6 +23,10 @@ export default function AppRouter() {
         {
           element: <HomePage />,
           index: true
+        },
+        {
+          path: '/shop',
+          element: <ShopPage />
         }
       ]
     }
@@ -37,6 +42,7 @@ export default function AppRouter() {
       path: '/404',
       element: <NotFound />
     },
+
     {
       path: '*',
       element: <Navigate to="/404" replace />

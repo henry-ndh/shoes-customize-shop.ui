@@ -12,7 +12,6 @@ import {
 import { usePathname } from '@/routes/hooks';
 import { Link } from 'react-router-dom';
 import { Input } from '../ui/input';
-import { ShoppingCart } from 'lucide-react';
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -38,7 +37,6 @@ export default function HeaderNav({
         <TooltipProvider>
           {items.map((item, index) => {
             const Icon = Icons[item.icon || 'arrowRight'];
-            const Color = item.color || '';
             return (
               item.href && (
                 <Tooltip key={index}>

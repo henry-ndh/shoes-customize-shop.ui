@@ -2,8 +2,8 @@ import { NavItem } from '@/types';
 
 export const navItems: NavItem[] = [
   {
-    title: 'Custom giày',
-    subTitle: 'Sản phẩm nguyên bản',
+    title: 'Trang chủ',
+    subTitle: 'Giới thiệu sản phẩm',
     href: '/',
     icon: 'shoes',
     label: 'shoes',
@@ -11,8 +11,8 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Cửa hàng',
-    subTitle: 'Sản phẩm custom',
-    href: '/',
+    subTitle: 'Cửa hàng sản phẩm',
+    href: '/shop',
     icon: 'store',
     label: 'Store',
     color: '#1ba6f9'
@@ -20,7 +20,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Thương hiệu',
     subTitle: 'Các thương hiệu',
-    href: '/',
+    href: '/brands',
     icon: 'crown',
     label: 'crown',
     color: '#f20e45'

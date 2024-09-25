@@ -21,7 +21,7 @@ const ErrorFallback = ({ error }: FallbackProps) => {
   const router = useRouter();
   return (
     <div
-      className="flex h-screen w-screen flex-col items-center  justify-center text-red-500"
+      className="text-red-500 flex h-screen w-screen flex-col  items-center justify-center"
       role="alert"
     >
       <h2 className="text-2xl font-semibold">
@@ -48,7 +48,7 @@ export default function AppProvider({
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <QueryClientProvider client={queryClient}>
               <ReactQueryDevtools />
-              <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+              <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                 <SidebarProvider>{children}</SidebarProvider>
               </ThemeProvider>
             </QueryClientProvider>

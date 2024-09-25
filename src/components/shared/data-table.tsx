@@ -33,7 +33,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import PopupModal from '@/components/shared/popup-modal';
-import StudentCreateForm from '@/pages/students/components/student-forms/student-create-form';
+// import StudentCreateForm from '@/pages/students/components/student-forms/student-create-form';
 import { Input } from '../ui/input';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -118,7 +118,7 @@ export default function DataTable<TData, TValue>({
             className="w-1/3 rounded-md border px-4 py-2"
           />
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           {showAdd && (
             <PopupModal
               renderModal={(onClose) => (
@@ -126,7 +126,7 @@ export default function DataTable<TData, TValue>({
               )}
             />
           )}
-        </div>
+        </div> */}
       </div>
       <ScrollArea
         className={`h-[calc(${heightTable}-220px)] rounded-md border md:h-[calc(${heightTable}-80px)]`}
