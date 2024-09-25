@@ -38,7 +38,10 @@ import {
   Crown,
   BookHeart,
   Headset,
-  Pencil
+  Pencil,
+  ShieldCheck,
+  Truck,
+  HandHelping
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -82,6 +85,9 @@ export const Icons = {
   bookHeart: BookHeart,
   headset: Headset,
   pencil: Pencil,
+  shieldCheck: ShieldCheck,
+  truck: Truck,
+  handHelping: HandHelping,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

@@ -4,7 +4,7 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
 const DashboardLayout = lazy(() => import('@/components/layout/layout'));
 const SignInPage = lazy(() => import('@/pages/auth/signin'));
-const DashboardPage = lazy(() => import('@/pages/dashboard'));
+const HomePage = lazy(() => import('@/pages/Home/index'));
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -20,7 +20,7 @@ export default function AppRouter() {
       ),
       children: [
         {
-          element: <DashboardPage />,
+          element: <HomePage />,
           index: true
         }
       ]
