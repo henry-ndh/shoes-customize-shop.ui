@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import BasePages from '@/components/shared/base-pages.js';
 import { FilterProduct } from './FilterProduct/FilterProduct';
 
@@ -29,21 +30,158 @@ const FilterPrice = [
   }
 ];
 
+const FilterProductType = [
+  {
+    id: 'type1',
+    title: 'Sneaker',
+    value: 'sneaker'
+  },
+  {
+    id: 'type2',
+    title: 'Giày lười',
+    value: 'giay-loi'
+  },
+  {
+    id: 'type3',
+    title: 'Giày tây',
+    value: 'giay-tay'
+  },
+  {
+    id: 'type4',
+    title: 'Giày thể thao',
+    value: 'giay-the-thao'
+  },
+  {
+    id: 'type5',
+    title: 'Giày công sở',
+    value: 'giay-cong-so'
+  },
+  {
+    id: 'type6',
+    title: 'Giày bóng đá',
+    value: 'giay-bong-da'
+  },
+  {
+    id: 'type7',
+    title: 'Giày chạy bộ',
+    value: 'giay-chay-bo'
+  },
+  {
+    id: 'type8',
+    title: 'Giày sandal',
+    value: 'giay-sandal'
+  }
+];
+
+const ListProduct = [
+  {
+    id: 1,
+    name: 'Sneaker Air Jordan 1',
+    price: '2,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 2,
+    name: 'Giày lười nam',
+    price: '500,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 3,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 4,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 5,
+    name: 'Sneaker Nike Air Force 1',
+    price: '1,500,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 6,
+    name: 'Giày thể thao Adidas',
+    price: '3,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  }
+];
+
 export default function ShopPage() {
+  const [visibleCount, setVisibleCount] = useState(5);
+
+  const showMoreProducts = () => {
+    setVisibleCount((prevCount) => prevCount + 5);
+  };
+
   return (
     <>
       <BasePages
         className="relative h-screen max-h-screen flex-1 overflow-y-auto p-4"
         pageHead="Cửa háng sản phẩm | G-Local"
       >
-        <div className="mx-auto grid h-full w-[85%] grid-cols-[35%,65%]">
-          <div className="bg-rose-100 ">
-            <h1 className="font-bold">G-Local Shoes</h1>
-            <div>
-              <FilterProduct items={FilterPrice} nameType="GIÁ TIỀN" />
+        <div className="mx-auto grid h-full w-[85%] grid-cols-[30%,70%]">
+          <div className="">
+            <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
+            <div className="ml-3 mt-7">
+              <FilterProduct
+                items={FilterPrice}
+                nameType="GIÁ TIỀN"
+                onFilterChange={(value) => {
+                  console.log(value);
+                }}
+              />
+            </div>
+            <div className="ml-3 mt-10">
+              <FilterProduct
+                items={FilterProductType}
+                nameType="DÒNG SẢN PHẨM"
+                onFilterChange={(value) => {
+                  console.log(value);
+                }}
+              />
             </div>
           </div>
-          <div className="bg-rose-200">1221</div>
+          <div className="">
+            <div className="grid grid-cols-4 gap-6">
+              {ListProduct.slice(0, visibleCount).map((product) => (
+                <div key={product.id} className="flex flex-col">
+                  <img
+                    loading="lazy"
+                    src={product.image}
+                    alt={product.name}
+                    className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                  />
+                  <p className="mt-3 text-[12px] text-muted-foreground">
+                    BEST QUALITY
+                  </p>
+                  <div className="">{product.name}</div>
+                  <div className="text-start">{product.price} đ</div>
+                </div>
+              ))}
+            </div>
+            {visibleCount < ListProduct.length && (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={showMoreProducts}
+                  className="bg-blue-500 hover:bg-blue-700 rounded px-4 py-2 text-white"
+                >
+                  Xem thêm
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </BasePages>
     </>
