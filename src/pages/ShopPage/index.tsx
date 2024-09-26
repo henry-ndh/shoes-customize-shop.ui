@@ -3,6 +3,7 @@ import BasePages from '@/components/shared/base-pages.js';
 import { FilterProduct } from './FilterProduct/FilterProduct';
 import { Pagination } from '@/components/ui/pagination';
 import PaginationSection from '@/components/shared/pagination-section';
+import { Link } from 'react-router-dom';
 const posts = [
   /* Mảng chứa dữ liệu bài đăng của bạn */
 ];
@@ -159,16 +160,21 @@ export default function ShopPage() {
           </div>
 
           {/* show product */}
-          <div className="">
+          <div className="flex h-[74dvh] flex-col justify-between">
             <div className="grid grid-cols-4 gap-6">
               {ListProduct.map((product) => (
-                <div key={product.id} className="flex flex-col">
-                  <img
-                    loading="lazy"
-                    src={product.image}
-                    alt={product.name}
-                    className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
-                  />
+                <div key={product.id} className="flex  flex-col">
+                  <Link
+                    to={`/product/${product.id}`}
+                    className="flex flex-col items-center"
+                  >
+                    <img
+                      loading="lazy"
+                      src={product.image}
+                      alt={product.name}
+                      className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                    />
+                  </Link>
                   <p className="mt-3 text-[12px] text-muted-foreground">
                     BEST QUALITY
                   </p>
@@ -179,7 +185,6 @@ export default function ShopPage() {
             </div>
 
             {/* pagination */}
-
             <PaginationSection
               totalPosts={totalPosts}
               postsPerPage={postsPerPage}

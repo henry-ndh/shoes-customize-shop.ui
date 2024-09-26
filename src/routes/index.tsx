@@ -1,4 +1,5 @@
 import NotFound from '@/pages/not-found';
+import path from 'path';
 import { Suspense, lazy } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
@@ -6,6 +7,8 @@ const DashboardLayout = lazy(() => import('@/components/layout/layout'));
 const SignInPage = lazy(() => import('@/pages/auth/signin'));
 const HomePage = lazy(() => import('@/pages/Home/index'));
 const ShopPage = lazy(() => import('@/pages/ShopPage/index'));
+const ProductDetail = lazy(() => import('@/pages/ProductDetail/index'));
+
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -27,6 +30,10 @@ export default function AppRouter() {
         {
           path: '/shop',
           element: <ShopPage />
+        },
+        {
+          path: '/product/:id',
+          element: <ProductDetail />
         }
       ]
     }
