@@ -1,8 +1,9 @@
+import ScrollToTop from '@/hooks/scroll-to-top';
 import NotFound from '@/pages/not-found';
 import { Suspense, lazy } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
-const DashboardLayout = lazy(() => import('@/components/layout/layout'));
+const SystemLayout = lazy(() => import('@/components/layout/layout'));
 const SignInPage = lazy(() => import('@/pages/auth/signin'));
 const HomePage = lazy(() => import('@/pages/Home/index'));
 const ShopPage = lazy(() => import('@/pages/ShopPage/index'));
@@ -12,15 +13,16 @@ const CartPage = lazy(() => import('@/pages/CartPage/index'));
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
-  const dashboardRoutes = [
+  const systemRoute = [
     {
       path: '/',
       element: (
-        <DashboardLayout>
+        <SystemLayout>
           <Suspense>
+            <ScrollToTop />
             <Outlet />
           </Suspense>
-        </DashboardLayout>
+        </SystemLayout>
       ),
       children: [
         {
@@ -64,7 +66,7 @@ export default function AppRouter() {
     }
   ];
 
-  const routes = useRoutes([...dashboardRoutes, ...publicRoutes]);
+  const routes = useRoutes([...systemRoute, ...publicRoutes]);
 
   return routes;
 }

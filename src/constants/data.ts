@@ -18,9 +18,9 @@ export const navItems: NavItem[] = [
     color: '#1ba6f9'
   },
   {
-    title: 'Thương hiệu',
-    subTitle: 'Các thương hiệu',
-    href: '/brands',
+    title: 'Custom',
+    subTitle: 'Sản phẩm custom',
+    href: '/shop',
     icon: 'crown',
     label: 'crown',
     color: '#f20e45'

@@ -94,10 +94,11 @@ export default function HeaderNav({
           placeholder="Tìm kiếm sản phẩm dành cho riêng bạn"
           className="h-8 w-[80%] rounded-md bg-gray-200 px-4 py-5 text-[12px]"
         ></Input>
-        <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
-          2
-          <Icons.shoppingCart className="" />
-        </div>
+        <Link to="/cart">
+          <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
+            2 <Icons.shoppingCart className="" />
+          </div>
+        </Link>
         <UserNav />
       </div>
     </nav>

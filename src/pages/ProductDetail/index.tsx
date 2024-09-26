@@ -82,7 +82,7 @@ export default function ProductDetail() {
     <>
       <BasePages
         className="relative mx-auto  max-h-screen w-[80%] flex-1"
-        pageHead="Trang chủ | G-Local"
+        pageHead="Chi tiết sản phẩm | G-Local"
         breadcrumbs={[
           { title: 'Trang chủ', link: '/' },
           { title: 'Sản phẩm', link: '/shop' },

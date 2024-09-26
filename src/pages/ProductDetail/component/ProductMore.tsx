@@ -34,17 +34,17 @@ export const ProductMore = () => {
   return (
     <div className="">
       <div>
-        <h1 className="mb-2 text-[18px]">Sản phẩm khác</h1>
+        <h1 className="mb-2 text-[18px]">Sản phẩm nổi bật</h1>
         <div className="grid h-1/2 grid-cols-4 gap-8">
           {listProduct.map((product) => (
             <div className="h-1/2 w-full" key={product.id}>
-              <Link to="/product/1">
+              <a href="/product/1">
                 <img
                   className="h-full w-full rounded-xl object-cover duration-300 hover:scale-105"
                   src={product.image}
                   alt={product.name}
                 />
-              </Link>
+              </a>
               <div className="mt-3">
                 <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
                 <p>{product.name}</p>
@@ -55,7 +55,7 @@ export const ProductMore = () => {
         </div>
       </div>
       <div>
-        <h1 className="mb-2 text-[18px]">Sản phẩm nổi bật</h1>
+        <h1 className="mb-2 text-[18px]">Sản phẩm khác</h1>
         <div className="grid h-1/2 grid-cols-4 gap-6">
           {listProduct.map((product) => (
             <div className="h-1/2 w-full" key={product.id}>
