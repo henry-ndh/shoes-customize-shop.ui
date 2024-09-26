@@ -89,7 +89,7 @@ export default function CartPage() {
     <>
       <BasePages
         className="relative mx-auto max-h-screen w-[80%] flex-1 overflow-y-auto p-4"
-        pageHead="Trang chủ | G-Local"
+        pageHead="Giỏ hàng | G-Local"
         breadcrumbs={[
           { title: 'Trang chủ', link: '/' },
           { title: 'Giỏ hàng', link: '/cart' }
@@ -177,7 +177,7 @@ export default function CartPage() {
                     {/* Xóa */}
                     <div
                       className="cursor-pointer text-yellow"
-                      onClick={() => confirmDeleteProduct(product.id)} // Gọi hàm xác nhận xóa với id sản phẩm
+                      onClick={() => confirmDeleteProduct(product.id)}
                     >
                       <Icons.trash2 />
                     </div>

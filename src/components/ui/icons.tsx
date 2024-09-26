@@ -49,12 +49,16 @@ import {
   HandCoins,
   MapPin,
   Mail,
-  Trash2
+  Trash2,
+  DollarSign,
+  Receipt
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  receipt: Receipt,
+  money: DollarSign,
   trash2: Trash2,
   mail: Mail,
   mapPin: MapPin,
