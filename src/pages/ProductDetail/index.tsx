@@ -2,6 +2,9 @@ import BasePages from '@/components/shared/base-pages.js';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { useState } from 'react';
+import { Policy } from './component/Policy';
+import { ProductMore } from './component/ProductMore';
+
 const productItem = {
   name: 'Giày thể thao nam',
   price: '1.500.000',
@@ -76,10 +79,15 @@ export default function ProductDetail() {
   return (
     <>
       <BasePages
-        className="relative max-h-screen flex-1 overflow-y-auto p-4"
+        className="relative mx-auto  max-h-screen w-[80%] flex-1"
         pageHead="Trang chủ | G-Local"
+        breadcrumbs={[
+          { title: 'Trang chủ', link: '/' },
+          { title: 'Sản phẩm', link: '/shop' },
+          { title: 'Chi tiết sản phẩm', link: '/product-detail' }
+        ]}
       >
-        <div className="mx-auto grid h-[73dvh] w-[80%] grid-cols-2">
+        <div className="mx-auto  mt-3 grid  w-full grid-cols-2 ">
           <div className="grid grid-cols-[20%,80%] ">
             {/* Product Image thumbnail */}
             <div className="flex flex-col gap-4">
@@ -101,12 +109,12 @@ export default function ProductDetail() {
               <img
                 src={imagePicked.url}
                 alt="product"
-                className="h-[70%] w-full object-cover"
+                className="h-[50%] w-full object-cover"
               />
             </div>
           </div>
           {/* Info Product Detail */}
-          <div className="ml-[5%] flex  flex-col gap-1">
+          <div className=" mb-[100px] ml-[5%] flex  flex-col gap-1">
             {/* Tên sản phẩm */}
             <h1 className="text-[20px] font-bold">{name}</h1>
 
@@ -228,7 +236,24 @@ export default function ProductDetail() {
                 );
               })}
             </div>
+
+            {/* Thông tin sản phẩm */}
+            <div>
+              <p className="text-[18px] font-semibold ">Thông tin sản phẩm</p>
+              <p className="mt-2 text-[13px] text-muted-foreground">
+                Giày thể thao nam chính hãng, chất lượng cao, đảm bảo không phai
+                màu, không bong tróc, không đau chân khi sử dụng.
+              </p>
+            </div>
+            {/* Chính sách bảo hành */}
+            <div>
+              <Policy />
+            </div>
           </div>
+        </div>
+        <div className="mx-auto w-full">
+          {' '}
+          <ProductMore />
         </div>
       </BasePages>
     </>

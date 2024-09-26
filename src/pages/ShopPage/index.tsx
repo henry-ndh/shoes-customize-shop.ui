@@ -125,8 +125,8 @@ const ListProduct = [
 
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPosts = 100; // Replace with your actual total posts
-  const postsPerPage = 10; // Replace with your desired posts per page
+  const totalPosts = 100;
+  const postsPerPage = 10;
   console.log('currentPage', currentPage);
 
   return (

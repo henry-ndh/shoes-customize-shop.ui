@@ -3,7 +3,6 @@ import HeaderNav from '@/components/shared/header-nav';
 import { navItems, subNavItems } from '@/constants/data';
 import { useSidebar } from '@/hooks/use-sidebar';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 import { Icons } from '@/components/ui/icons';
 
 type SidebarProps = {

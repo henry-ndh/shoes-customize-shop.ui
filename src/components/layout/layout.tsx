@@ -3,6 +3,7 @@ import Sidebar from '../shared/sidebar';
 import Header from '../shared/header';
 import MobileSidebar from '../shared/mobile-sidebar';
 import { MenuIcon } from 'lucide-react';
+import Footer from '../shared/footer';
 
 export default function DashboardLayout({
   children
@@ -18,7 +19,7 @@ export default function DashboardLayout({
         setSidebarOpen={setSidebarOpen}
       />
       <Sidebar />
-      <div className="flex w-full flex-col overflow-hidden">
+      <div className="flex w-full flex-col">
         <div className="relative z-10 flex h-20 flex-shrink-0 md:hidden">
           <button
             className="pl-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 xl:hidden"
@@ -29,8 +30,9 @@ export default function DashboardLayout({
           </button>
           <Header />
         </div>
-        <main className="">{children}</main>
+        <main className="h-[80dvh] overflow-y-auto">{children}</main>
       </div>
+      {/* <Footer /> */}
     </div>
   );
 }
