@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { useState } from 'react';
 import { AlertModal } from '@/components/shared/alert-modal';
+import { Link } from 'react-router-dom';
 const initialProducts = [
   {
     id: 1,
@@ -116,7 +117,10 @@ export default function CartPage() {
                 <div className="ml-3 mt-3 flex w-full justify-between">
                   {/* Tên và size sản phẩm */}
                   <div>
-                    <p>{product.name}</p>
+                    <p>
+                      {product.name}{' '}
+                      {product.isCustomized ? `(Sản phẩm custom)` : ''}{' '}
+                    </p>
                     <p className="text-muted-foreground">
                       Size: {product.size}
                     </p>
@@ -195,9 +199,11 @@ export default function CartPage() {
                 đ
               </span>
             </p>
-            <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
-              Thanh toán
-            </Button>
+            <Link to="/checkout-pay/1">
+              <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
+                Thanh toán
+              </Button>
+            </Link>
           </div>
         </div>
       </BasePages>
