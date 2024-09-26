@@ -43,12 +43,17 @@ import {
   Pencil,
   ShieldCheck,
   Truck,
-  HandHelping
+  HandHelping,
+  Gift,
+  BadgeCheck,
+  HandCoins
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  handCoins: HandCoins,
+  badgeCheck: BadgeCheck,
   dashboard: LayoutDashboardIcon,
   logo: Command,
   login: LogIn,
@@ -92,6 +97,7 @@ export const Icons = {
   shieldCheck: ShieldCheck,
   truck: Truck,
   handHelping: HandHelping,
+  gift: Gift,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
