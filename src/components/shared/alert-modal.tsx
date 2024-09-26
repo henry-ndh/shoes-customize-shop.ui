@@ -5,7 +5,7 @@ type TAlertModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  loading: boolean;
+  loading?: boolean;
   title?: string;
   description?: string;
 };
@@ -28,7 +28,12 @@ export const AlertModal = ({
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Quay lại
         </Button>
-        <Button disabled={loading} variant="destructive" onClick={onConfirm}>
+        <Button
+          disabled={loading}
+          variant="destructive"
+          className=""
+          onClick={onConfirm}
+        >
           Tiếp tục
         </Button>
       </div>

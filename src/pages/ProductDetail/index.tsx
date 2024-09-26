@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Policy } from './component/Policy';
 import { ProductMore } from './component/ProductMore';
 import Footer from '@/components/shared/footer';
+import { Link } from 'react-router-dom';
 
 const productItem = {
   name: 'Giày thể thao nam',
@@ -215,9 +216,11 @@ export default function ProductDetail() {
                   (Custom sản phẩm tùy theo ý thích của bạn)
                 </span>
               </Button>
-              <Button className="h-[48px] w-full rounded-md bg-primary text-[16px] text-primary-foreground">
-                Thanh toán sản phẩm (COD)
-              </Button>
+              <Link to="/cart">
+                <Button className="h-[48px] w-full rounded-md bg-primary text-[16px] text-primary-foreground">
+                  Thanh toán sản phẩm (COD)
+                </Button>
+              </Link>
               <p className="text-center">
                 Bạn cần hỗ trợ ? <a className="underline">Liên hệ ngay</a>
               </p>

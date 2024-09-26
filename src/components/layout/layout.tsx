@@ -3,7 +3,6 @@ import Sidebar from '../shared/sidebar';
 import Header from '../shared/header';
 import MobileSidebar from '../shared/mobile-sidebar';
 import { MenuIcon } from 'lucide-react';
-import Footer from '../shared/footer';
 
 export default function DashboardLayout({
   children
@@ -13,7 +12,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden ">
+    <div className="flex h-screen flex-col overflow-hidden bg-secondary ">
       <MobileSidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}

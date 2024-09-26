@@ -1,5 +1,4 @@
 import NotFound from '@/pages/not-found';
-import path from 'path';
 import { Suspense, lazy } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
@@ -8,7 +7,8 @@ const SignInPage = lazy(() => import('@/pages/auth/signin'));
 const HomePage = lazy(() => import('@/pages/Home/index'));
 const ShopPage = lazy(() => import('@/pages/ShopPage/index'));
 const ProductDetail = lazy(() => import('@/pages/ProductDetail/index'));
-
+const CheckOutPay = lazy(() => import('@/pages/Checkout/Pay/index'));
+const CartPage = lazy(() => import('@/pages/CartPage/index'));
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -34,6 +34,14 @@ export default function AppRouter() {
         {
           path: '/product/:id',
           element: <ProductDetail />
+        },
+        {
+          path: '/checkout-pay/:orderId',
+          element: <CheckOutPay />
+        },
+        {
+          path: '/cart',
+          element: <CartPage />
         }
       ]
     }

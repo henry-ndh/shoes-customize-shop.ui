@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import BasePages from '@/components/shared/base-pages.js';
 import { FilterProduct } from './FilterProduct/FilterProduct';
-import { Pagination } from '@/components/ui/pagination';
 import PaginationSection from '@/components/shared/pagination-section';
 import { Link } from 'react-router-dom';
-const posts = [
-  /* Mảng chứa dữ liệu bài đăng của bạn */
-];
+import { ProductMore } from '../ProductDetail/component/ProductMore';
+import Footer from '@/components/shared/footer';
+
 const FilterPrice = [
   {
     id: 'price1',
@@ -120,6 +119,76 @@ const ListProduct = [
     price: '3,000,000',
     image:
       'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 1,
+    name: 'Sneaker Air Jordan 1',
+    price: '2,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 2,
+    name: 'Giày lười nam',
+    price: '500,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 3,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 4,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 5,
+    name: 'Sneaker Nike Air Force 1',
+    price: '1,500,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 6,
+    name: 'Giày thể thao Adidas',
+    price: '3,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 1,
+    name: 'Sneaker Air Jordan 1',
+    price: '2,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 2,
+    name: 'Giày lười nam',
+    price: '500,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 3,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
+  },
+  {
+    id: 4,
+    name: 'Giày tây nam',
+    price: '1,000,000',
+    image:
+      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
   }
 ];
 
@@ -132,10 +201,14 @@ export default function ShopPage() {
   return (
     <>
       <BasePages
-        className="relative h-screen max-h-screen flex-1 overflow-y-auto p-4"
+        className="relative mx-auto  h-[100%] max-h-screen w-[85%] flex-1 p-4"
         pageHead="Cửa háng sản phẩm | G-Local"
+        breadcrumbs={[
+          { title: 'Trang chủ', link: '/' },
+          { title: 'Sản phẩm', link: '/shop' }
+        ]}
       >
-        <div className="mx-auto grid h-full w-[85%] grid-cols-[30%,70%]">
+        <div className="mx-auto mt-2 grid w-full  grid-cols-[30%,70%]">
           {/* filter product */}
           <div className="">
             <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
@@ -160,7 +233,7 @@ export default function ShopPage() {
           </div>
 
           {/* show product */}
-          <div className="flex h-[74dvh] flex-col justify-between">
+          <div className="flex  flex-col justify-between">
             <div className="grid grid-cols-4 gap-6">
               {ListProduct.map((product) => (
                 <div key={product.id} className="flex  flex-col">
@@ -183,15 +256,20 @@ export default function ShopPage() {
                 </div>
               ))}
             </div>
-
-            {/* pagination */}
-            <PaginationSection
-              totalPosts={totalPosts}
-              postsPerPage={postsPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
           </div>
+        </div>
+        <div className="mt-6">
+          <PaginationSection
+            totalPosts={totalPosts}
+            postsPerPage={postsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />{' '}
+        </div>
+        <div className="mx-auto mt-10 ">
+          {/* pagination */}
+          <ProductMore />
+          <Footer />
         </div>
       </BasePages>
     </>
