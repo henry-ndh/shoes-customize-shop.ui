@@ -201,74 +201,79 @@ export default function ShopPage() {
   return (
     <>
       <BasePages
-        className="relative mx-auto  h-[100%] max-h-screen w-[85%] flex-1 p-4"
+        className="relative mx-auto  h-auto  w-[85%] flex-1  p-4 p-4"
         pageHead="Cửa háng sản phẩm | G-Local"
         breadcrumbs={[
           { title: 'Trang chủ', link: '/' },
           { title: 'Sản phẩm', link: '/shop' }
         ]}
       >
-        <div className="mx-auto mt-2 grid w-full  grid-cols-[30%,70%]">
-          {/* filter product */}
-          <div className="">
-            <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
-            <div className="ml-3 mt-7">
-              <FilterProduct
-                items={FilterPrice}
-                nameType="GIÁ TIỀN"
-                onFilterChange={(value) => {
-                  console.log(value);
-                }}
-              />
+        <div className="mt-3 rounded-2xl bg-white p-6">
+          <div className="mx-auto mt-2 grid w-full grid-cols-[25%,75%] ">
+            {/* filter product */}
+            <div className="">
+              <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
+              <div className="ml-3 mt-7">
+                <FilterProduct
+                  items={FilterPrice}
+                  nameType="GIÁ TIỀN"
+                  onFilterChange={(value) => {
+                    console.log(value);
+                  }}
+                />
+              </div>
+              <div className="ml-3 mt-10">
+                <FilterProduct
+                  items={FilterProductType}
+                  nameType="DÒNG SẢN PHẨM"
+                  onFilterChange={(value) => {
+                    console.log(value);
+                  }}
+                />
+              </div>
             </div>
-            <div className="ml-3 mt-10">
-              <FilterProduct
-                items={FilterProductType}
-                nameType="DÒNG SẢN PHẨM"
-                onFilterChange={(value) => {
-                  console.log(value);
-                }}
-              />
-            </div>
-          </div>
 
-          {/* show product */}
-          <div className="flex  flex-col justify-between">
-            <div className="grid grid-cols-4 gap-6">
-              {ListProduct.map((product) => (
-                <div key={product.id} className="flex  flex-col">
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="flex flex-col items-center"
-                  >
-                    <img
-                      loading="lazy"
-                      src={product.image}
-                      alt={product.name}
-                      className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
-                    />
-                  </Link>
-                  <p className="mt-3 text-[12px] text-muted-foreground">
-                    BEST QUALITY
-                  </p>
-                  <div className="">{product.name}</div>
-                  <div className="text-start">{product.price} đ</div>
-                </div>
-              ))}
+            {/* show product */}
+            <div className="flex  flex-col justify-between">
+              <div className="grid grid-cols-4 gap-10">
+                {ListProduct.map((product) => (
+                  <div key={product.id} className="mb-4 flex flex-col">
+                    <Link
+                      to={`/product/${product.id}`}
+                      className="flex flex-col items-center"
+                    >
+                      <img
+                        loading="lazy"
+                        src={product.image}
+                        alt={product.name}
+                        className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                      />
+                    </Link>
+                    <p className="mt-3 text-[12px] text-muted-foreground">
+                      BEST QUALITY
+                    </p>
+                    <div className="">{product.name}</div>
+                    <div className="text-start">{product.price} đ</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+          <div className="mt-6 ">
+            <PaginationSection
+              totalPosts={totalPosts}
+              postsPerPage={postsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />{' '}
+          </div>
         </div>
-        <div className="mt-6">
-          <PaginationSection
-            totalPosts={totalPosts}
-            postsPerPage={postsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />{' '}
-        </div>
-        <div className="mx-auto mt-10 ">
+        <div className="mx-auto mt-6 rounded-2xl bg-white p-6 ">
           {/* pagination */}
           <ProductMore />
+        </div>
+        <div className="mt-4 rounded-2xl ">
+          {' '}
           <Footer />
         </div>
       </BasePages>

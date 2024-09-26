@@ -15,13 +15,14 @@ export default function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className={`relative h-14 w-14 rounded-full`}>
-          <Avatar className="h-14 w-14">
+        <Button variant="ghost" className={`relative h-10 w-10 bg-gray-300`}>
+          <Avatar className="h-10 w-10 border-none">
             <AvatarImage
               src={
                 'https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001882.png'
               }
               alt={''}
+              className="border-none"
             />
             <AvatarFallback>hello</AvatarFallback>
           </Avatar>

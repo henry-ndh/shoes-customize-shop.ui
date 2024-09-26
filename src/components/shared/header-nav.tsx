@@ -12,6 +12,7 @@ import {
 import { usePathname } from '@/routes/hooks';
 import { Link } from 'react-router-dom';
 import { Input } from '../ui/input';
+import UserNav from './user-nav';
 
 interface DashboardNavProps {
   items: NavItem[];
@@ -97,9 +98,7 @@ export default function HeaderNav({
           2
           <Icons.shoppingCart className="" />
         </div>
-        <div className="rounded-lg bg-gray-200 p-2">
-          <Icons.user />
-        </div>
+        <UserNav />
       </div>
     </nav>
   );

@@ -4,7 +4,7 @@ import { Input } from '../ui/input';
 
 export default function Footer() {
   return (
-    <footer className="h-[60dvh] w-full py-8 2xl:h-[45dvh]">
+    <footer className="h-[40dvh] w-full py-8 2xl:h-[30dvh]">
       <div className="">
         <div className="grid grid-cols-3">
           <div>

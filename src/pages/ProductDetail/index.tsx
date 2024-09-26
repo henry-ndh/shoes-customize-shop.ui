@@ -89,7 +89,7 @@ export default function ProductDetail() {
           { title: 'Chi tiết sản phẩm', link: '/product-detail' }
         ]}
       >
-        <div className="mx-auto  mt-3 grid  w-full grid-cols-2 ">
+        <div className="mx-auto  mt-3 grid w-full grid-cols-2 rounded-2xl bg-white p-6 ">
           <div className="grid grid-cols-[20%,80%] ">
             {/* Product Image thumbnail */}
             <div className="flex flex-col gap-4">
@@ -99,7 +99,7 @@ export default function ProductDetail() {
                     key={item.id}
                     src={item.url}
                     alt="product"
-                    className={`h-[105px] w-[90px] p-1 transition-transform duration-300 hover:scale-105 ${item.id === imagePicked.id ? 'border-[2px] border-yellow' : ''}`}
+                    className={`h-[105px] w-[90px] rounded-xl p-1 transition-transform duration-300 hover:scale-105 ${item.id === imagePicked.id ? 'border-[1.5px] border-yellow' : ''}`}
                     onClick={() => setImagePicked(item)}
                   />
                 );
@@ -111,7 +111,7 @@ export default function ProductDetail() {
               <img
                 src={imagePicked.url}
                 alt="product"
-                className="h-[50%] w-full object-cover"
+                className="h-[50%] w-full rounded-2xl object-cover"
               />
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
-        <div className="mx-auto w-full">
+        <div className="mx-auto mt-4 w-full rounded-2xl bg-white p-6">
           {' '}
           <ProductMore />
         </div>
