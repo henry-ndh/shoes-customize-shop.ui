@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import BasePages from '@/components/shared/base-pages.js';
 import { FilterProduct } from './FilterProduct/FilterProduct';
-
+import { Pagination } from '@/components/ui/pagination';
+import PaginationSection from '@/components/shared/pagination-section';
+const posts = [
+  /* Mảng chứa dữ liệu bài đăng của bạn */
+];
 const FilterPrice = [
   {
     id: 'price1',
@@ -119,11 +123,10 @@ const ListProduct = [
 ];
 
 export default function ShopPage() {
-  const [visibleCount, setVisibleCount] = useState(5);
-
-  const showMoreProducts = () => {
-    setVisibleCount((prevCount) => prevCount + 5);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPosts = 100; // Replace with your actual total posts
+  const postsPerPage = 10; // Replace with your desired posts per page
+  console.log('currentPage', currentPage);
 
   return (
     <>
@@ -132,6 +135,7 @@ export default function ShopPage() {
         pageHead="Cửa háng sản phẩm | G-Local"
       >
         <div className="mx-auto grid h-full w-[85%] grid-cols-[30%,70%]">
+          {/* filter product */}
           <div className="">
             <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
             <div className="ml-3 mt-7">
@@ -153,9 +157,11 @@ export default function ShopPage() {
               />
             </div>
           </div>
+
+          {/* show product */}
           <div className="">
             <div className="grid grid-cols-4 gap-6">
-              {ListProduct.slice(0, visibleCount).map((product) => (
+              {ListProduct.map((product) => (
                 <div key={product.id} className="flex flex-col">
                   <img
                     loading="lazy"
@@ -171,16 +177,15 @@ export default function ShopPage() {
                 </div>
               ))}
             </div>
-            {visibleCount < ListProduct.length && (
-              <div className="mt-4 text-center">
-                <button
-                  onClick={showMoreProducts}
-                  className="bg-blue-500 hover:bg-blue-700 rounded px-4 py-2 text-white"
-                >
-                  Xem thêm
-                </button>
-              </div>
-            )}
+
+            {/* pagination */}
+
+            <PaginationSection
+              totalPosts={totalPosts}
+              postsPerPage={postsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
       </BasePages>

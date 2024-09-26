@@ -66,7 +66,10 @@ export default function PaginationSection({
         key={idx}
         className={currentPage === page ? 'rounded-md bg-primary' : ''}
       >
-        <PaginationLink onClick={() => setCurrentPage(page)}>
+        <PaginationLink
+          isActive={currentPage === page}
+          onClick={() => setCurrentPage(page)}
+        >
           {page}
         </PaginationLink>
       </PaginationItem>
