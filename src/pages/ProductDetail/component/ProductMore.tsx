@@ -30,23 +30,44 @@ const listProduct = [
 
 export const ProductMore = () => {
   return (
-    <div>
-      <h1 className="mb-2 text-[18px]">Sản phẩm khác</h1>
-      <div className="grid grid-cols-4 gap-6">
-        {listProduct.map((product) => (
-          <div className="w-full" key={product.id}>
-            <img
-              className="h-1/2 w-full object-cover duration-300 hover:scale-105"
-              src={product.image}
-              alt={product.name}
-            />
-            <div className="mt-3">
-              <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
-              <p>{product.name}</p>
-              <p>{product.price}</p>
+    <div className="">
+      <div>
+        <h1 className="mb-2 text-[18px]">Sản phẩm khác</h1>
+        <div className="grid h-1/2 grid-cols-4 gap-6">
+          {listProduct.map((product) => (
+            <div className="h-1/2 w-full" key={product.id}>
+              <img
+                className="h-full w-full object-cover duration-300 hover:scale-105"
+                src={product.image}
+                alt={product.name}
+              />
+              <div className="mt-3">
+                <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
+                <p>{product.name}</p>
+                <p>{product.price}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div>
+        <h1 className="mb-2 text-[18px]">Sản phẩm nổi bật</h1>
+        <div className="grid h-1/2 grid-cols-4 gap-6">
+          {listProduct.map((product) => (
+            <div className="h-1/2 w-full" key={product.id}>
+              <img
+                className="h-full w-full object-cover duration-300 hover:scale-105"
+                src={product.image}
+                alt={product.name}
+              />
+              <div className="mt-3">
+                <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
+                <p>{product.name}</p>
+                <p>{product.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

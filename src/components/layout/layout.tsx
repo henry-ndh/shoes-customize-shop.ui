@@ -20,19 +20,17 @@ export default function DashboardLayout({
       />
       <Sidebar />
       <div className="flex w-full flex-col">
-        <div className="relative z-10 flex h-20 flex-shrink-0 md:hidden">
+        <div className="relative z-10 flex md:hidden">
           <button
             className="pl-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 xl:hidden"
             onClick={() => setSidebarOpen(true)}
           >
-            <span className="sr-only">Open sidebar</span>
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </button>
           <Header />
         </div>
-        <main className="h-[80dvh] overflow-y-auto">{children}</main>
+        <main className="overflow-y-auto">{children}</main>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }

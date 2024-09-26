@@ -1,21 +1,56 @@
+import { Button } from '../ui/button';
+import { Icons } from '../ui/icons';
+import { Input } from '../ui/input';
+
 export default function Footer() {
   return (
-    <footer className="h-[20dvh] bg-gray-800 py-8 text-white">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+    <footer className="h-[60dvh] w-full py-8 2xl:h-[45dvh]">
+      <div className="">
+        <div className="grid grid-cols-3">
           <div>
-            <h3 className="text-lg font-semibold">About Us</h3>
+            <h3 className="text-lg font-semibold">Liên hệ</h3>
             <p className="mt-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
+              <ul className="flex flex-col gap-2">
+                <li className="flex">
+                  <Icons.mapPin className="mr-2 size-5" /> Địa chỉ : 1234 Street
+                  Name, City Name
+                </li>
+                <li className="flex">
+                  <Icons.phone className="mr-2 size-5" /> Số điện thoại : 0941
+                  821 121
+                </li>
+                <li className="flex">
+                  <Icons.mail className="mr-2 size-5" /> Email :
+                  Glocal@gmail.com
+                </li>
+              </ul>
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Contact Us</h3>
-            <p className="mt-4" />
-            <span className="block">Address: 1234 Street Name, City Name</span>
-            <span className="block">Phone: +123 456 7890</span>
-            <span className="block">Email: </span>
+            <h3 className="flex gap-4 text-lg font-semibold">Menu</h3>
+            <div className="mt-2 flex flex-col gap-2">
+              <a href="/" className="block">
+                Trang chủ
+              </a>
+              <a href="/shop" className="block">
+                Sản phẩm
+              </a>
+              <a href="/shop" className="block">
+                Giày Custom
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Đăng ký nhận tin</h3>
+            <div className="mt-4 flex gap-2">
+              <Input
+                className="h-[40px] rounded-md border border-gray-300"
+                placeholder="Nhập email của bạn"
+              />
+              <Button className="h-[40px] rounded-md bg-primary text-primary-foreground">
+                Đăng ký
+              </Button>
+            </div>
           </div>
         </div>
       </div>

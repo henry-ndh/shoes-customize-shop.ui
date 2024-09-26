@@ -4,6 +4,7 @@ import { Icons } from '@/components/ui/icons';
 import { useState } from 'react';
 import { Policy } from './component/Policy';
 import { ProductMore } from './component/ProductMore';
+import Footer from '@/components/shared/footer';
 
 const productItem = {
   name: 'Giày thể thao nam',
@@ -255,6 +256,7 @@ export default function ProductDetail() {
           {' '}
           <ProductMore />
         </div>
+        <Footer />
       </BasePages>
     </>
   );

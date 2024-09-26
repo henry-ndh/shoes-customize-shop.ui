@@ -46,12 +46,16 @@ import {
   HandHelping,
   Gift,
   BadgeCheck,
-  HandCoins
+  HandCoins,
+  MapPin,
+  Mail
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  mail: Mail,
+  mapPin: MapPin,
   handCoins: HandCoins,
   badgeCheck: BadgeCheck,
   dashboard: LayoutDashboardIcon,
