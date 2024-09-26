@@ -10,6 +10,7 @@ const ShopPage = lazy(() => import('@/pages/ShopPage/index'));
 const ProductDetail = lazy(() => import('@/pages/ProductDetail/index'));
 const CheckOutPay = lazy(() => import('@/pages/Checkout/Pay/index'));
 const CartPage = lazy(() => import('@/pages/CartPage/index'));
+const CustomizePage = lazy(() => import('@/pages/Customize/index'));
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -59,7 +60,10 @@ export default function AppRouter() {
       path: '/404',
       element: <NotFound />
     },
-
+    {
+      path: '/customize/1',
+      element: <CustomizePage />
+    },
     {
       path: '*',
       element: <Navigate to="/404" replace />

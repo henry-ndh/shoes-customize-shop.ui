@@ -32,7 +32,6 @@ import {
 } from '@tanstack/react-table';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import PopupModal from '@/components/shared/popup-modal';
 // import StudentCreateForm from '@/pages/students/components/student-forms/student-create-form';
 import { Input } from '../ui/input';
 interface DataTableProps<TData, TValue> {

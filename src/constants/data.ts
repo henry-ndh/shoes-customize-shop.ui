@@ -1,5 +1,14 @@
 import { NavItem } from '@/types';
-
+import {
+  PenToolIcon,
+  TypeIcon,
+  ImageIcon,
+  RectangleVerticalIcon,
+  LayersIcon,
+  SettingsIcon
+} from '@/constants/SVGIcon';
+import ImgCanva1 from '@/assets/canvas/canvas1.webp';
+import ImgCanva2 from '@/assets/canvas/canvas2.webp';
 export const navItems: NavItem[] = [
   {
     title: 'Trang chủ',
@@ -155,6 +164,50 @@ export const dashboardCard = [
     total: 2000,
     role: 'Schools',
     color: 'bg-[#D289FF] bg-opacity-30'
+  }
+];
+
+export const listMenuCustomize = [
+  {
+    id: 1,
+    icon: PenToolIcon,
+    title: 'Công cụ'
+  },
+  {
+    id: 2,
+    icon: TypeIcon,
+    title: 'Văn bản'
+  },
+  {
+    id: 3,
+    icon: ImageIcon,
+    title: 'Image Tool'
+  },
+  {
+    id: 4,
+    icon: RectangleVerticalIcon,
+    title: 'Color Picker'
+  },
+  {
+    id: 5,
+    icon: LayersIcon,
+    title: 'Layers'
+  },
+  {
+    id: 6,
+    icon: SettingsIcon,
+    title: 'Settings'
+  }
+];
+
+export const ImgCustomize = [
+  {
+    id: 1,
+    img: ImgCanva1
+  },
+  {
+    id: 2,
+    img: ImgCanva2
   }
 ];
 

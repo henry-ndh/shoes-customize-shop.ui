@@ -210,12 +210,14 @@ export default function ProductDetail() {
 
             {/* Nút mua ngay và custom */}
             <div className="mt-5 flex w-full flex-col gap-3">
-              <Button className="flex h-[56px] w-full flex-col items-center justify-center rounded-md bg-primary text-primary-foreground">
-                <p className="text-[16px]">Custom sản phẩm</p>
-                <span className="text-[13px]">
-                  (Custom sản phẩm tùy theo ý thích của bạn)
-                </span>
-              </Button>
+              <Link to="/customize/1">
+                <Button className="flex h-[56px] w-full flex-col items-center justify-center rounded-md bg-primary text-primary-foreground">
+                  <p className="text-[16px]">Custom sản phẩm</p>
+                  <span className="text-[13px]">
+                    (Custom sản phẩm tùy theo ý thích của bạn)
+                  </span>
+                </Button>
+              </Link>
               <Link to="/cart">
                 <Button className="h-[48px] w-full rounded-md bg-primary text-[16px] text-primary-foreground">
                   Thanh toán sản phẩm (COD)

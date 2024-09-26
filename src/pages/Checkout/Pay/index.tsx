@@ -1,8 +1,6 @@
 import BasePages from '@/components/shared/base-pages.js';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useState } from 'react';
-import { AlertModal } from '@/components/shared/alert-modal';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import ComboBoxFilter from '@/components/shared/combo-box-filter';
@@ -55,34 +53,7 @@ const initialProducts = [
 ];
 
 export default function CheckoutPay() {
-  const [products, setProducts] = useState(initialProducts);
-  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState(null);
-
-  const handleUpdateQuantity = (id, type) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) => {
-        if (product.id === id) {
-          let newQuantity = product.quantity;
-          if (type === 'decrease' && newQuantity > 1) {
-            newQuantity -= 1;
-          }
-          if (type === 'increase') {
-            newQuantity += 1;
-          }
-          return { ...product, quantity: newQuantity };
-        }
-        return product;
-      })
-    );
-  };
-
-  const handleDeleteProduct = () => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== productToDelete)
-    );
-    setIsAlertModalOpen(false);
-  };
+  const products = initialProducts;
 
   return (
     <>
@@ -96,13 +67,6 @@ export default function CheckoutPay() {
         ]}
       >
         {/* Modal Xác nhận xóa */}
-        <AlertModal
-          isOpen={isAlertModalOpen}
-          title="Thông báo"
-          onClose={() => setIsAlertModalOpen(false)}
-          onConfirm={handleDeleteProduct} // Xác nhận xóa sản phẩm
-          description="Bạn chắc chắc muốn xóa sản phẩm này chứ?"
-        />
 
         <div className="mt-4 grid  grid-cols-[58%,42%] gap-4">
           <div className="">
