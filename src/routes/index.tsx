@@ -11,6 +11,8 @@ const ProductDetail = lazy(() => import('@/pages/ProductDetail/index'));
 const CheckOutPay = lazy(() => import('@/pages/Checkout/Pay/index'));
 const CartPage = lazy(() => import('@/pages/CartPage/index'));
 const CustomizePage = lazy(() => import('@/pages/Customize/index'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage/index'));
+
 // ----------------------------------------------------------------------
 
 export default function AppRouter() {
@@ -45,6 +47,10 @@ export default function AppRouter() {
         {
           path: '/cart',
           element: <CartPage />
+        },
+        {
+          path: '/profile',
+          element: <ProfilePage />
         }
       ]
     }

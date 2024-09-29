@@ -8,17 +8,18 @@ import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect } from 'react';
 import * as fabric from 'fabric';
 import styled from 'styled-components';
-import IMGShirt from '@/assets/shirt.png';
+import IMGShirt from '@/assets/shoes/Product.jpg';
 import IMGShirtYellow from '@/assets/shirt_yellow.png';
 import IMGShirtRed from '@/assets/shirt_red.png';
 import { SketchPicker } from 'react-color';
-import { CongCu } from './MenuDetail';
+import { CongCu } from './MenuDetail'; // Ensure this component accepts addShape and addImage as props
 import { listMenuCustomize } from '@/constants/data';
 import {
   UndoIcon,
   RedoIcon,
   ZoomInIcon,
-  ZoomOutIcon
+  ZoomOutIcon,
+  DeleteIcon // Make sure to have this icon or replace it with an existing one
 } from '@/constants/SVGIcon';
 import { Input } from '@/components/ui/input';
 import { exportCanvasAsImage } from '@/helpers';
@@ -64,6 +65,22 @@ export default function CustomizePage() {
       const fabricCanvas = new fabric.Canvas(canvaRef.current);
       setCanvas(fabricCanvas);
 
+      // Add event listeners for selection events
+      fabricCanvas.on('selection:created', function (e) {
+        console.log('Object selected:', e.selected[0]);
+        setSelectedObject(e.selected[0]);
+      });
+
+      fabricCanvas.on('selection:updated', function (e) {
+        console.log('Selection updated:', e.selected[0]);
+        setSelectedObject(e.selected[0]);
+      });
+
+      fabricCanvas.on('selection:cleared', function () {
+        console.log('Selection cleared');
+        setSelectedObject(null);
+      });
+
       window.addEventListener('keydown', handleKeyDown);
 
       return () => {
@@ -74,7 +91,7 @@ export default function CustomizePage() {
   }, []);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Delete') {
+    if (event.key === 'Delete' || event.key === 'Backspace') {
       deleteSelectedObject();
     }
   };
@@ -114,12 +131,16 @@ export default function CustomizePage() {
   const addImage = (url: string) => {
     const img = new Image();
     img.src = url;
+    img.crossOrigin = 'anonymous';
     img.onload = () => {
       const fabricImage = new fabric.Image(img, {
         left: 0,
         top: 0,
-        scaleX: 150 / img.width,
-        scaleY: 150 / img.height
+        scaleX: 150 / img.width!,
+        scaleY: 150 / img.height!
+      });
+      fabricImage.on('selected', () => {
+        setSelectedObject(fabricImage);
       });
       canvas?.add(fabricImage);
       canvas?.renderAll();
@@ -129,6 +150,7 @@ export default function CustomizePage() {
   const randomColor = () => {
     return '#' + Math.floor(Math.random() * 16777215).toString(16);
   };
+
   const calculateStarPoints = ({
     numPoints,
     outerRadius,
@@ -148,13 +170,14 @@ export default function CustomizePage() {
 
     return points;
   };
+
   const addShape = (shape: string) => {
     if (!canvas) return;
     let left = 100;
     let top = 100;
     const padding = 10;
     const color = randomColor();
-    let newShape;
+    let newShape: fabric.Object;
 
     const objects = canvas.getObjects();
     const isOverlapping = (left: number, top: number) => {
@@ -162,8 +185,8 @@ export default function CustomizePage() {
         return (
           obj.left === left ||
           obj.top === top ||
-          obj.left + obj.width === left ||
-          obj.top + obj.height === top
+          obj.left! + obj.width! === left ||
+          obj.top! + obj.height! === top
         );
       });
     };
@@ -172,7 +195,8 @@ export default function CustomizePage() {
       left += padding;
       top += padding / 2 - 3;
     }
-    const commonProperties = { left: left, top: left, fill: color };
+
+    const commonProperties = { left: left, top: top, fill: color };
 
     switch (shape) {
       case 'rectangle':
@@ -214,6 +238,7 @@ export default function CustomizePage() {
       default:
         return;
     }
+
     newShape.on('selected', () => {
       setSelectedObject(newShape);
       setSelectedMenu(0);
@@ -241,7 +266,12 @@ export default function CustomizePage() {
   };
 
   const deleteSelectedObject = () => {
-    if (canvas) {
+    if (canvas && selectedObject) {
+      console.log('Deleting object:', selectedObject);
+      canvas.remove(selectedObject);
+      canvas.discardActiveObject();
+      setSelectedObject(null);
+      canvas.renderAll();
     }
   };
 
@@ -307,18 +337,18 @@ export default function CustomizePage() {
 
   return (
     <div className="flex h-screen w-full">
-      <div className="flex w-[5%] flex-col items-center justify-between  bg-[#18191b]  py-4">
+      {/* Left Toolbar */}
+      <div className="flex w-[5%] flex-col items-center justify-between bg-[#18191b] py-4">
         <div className="grid w-full gap-2">
           <TooltipProvider>
             {listMenuCustomize.map((item, index) => (
-              <Tooltip>
+              <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <button
-                    key={index}
                     className={`flex flex-col hover:bg-[#252627] ${
-                      item.id - 1 == selectedMenu
-                        ? `bg-[#252627]`
-                        : `bg-transparent transition-all duration-300`
+                      item.id - 1 === selectedMenu
+                        ? 'bg-[#252627]'
+                        : 'bg-transparent transition-all duration-300'
                     } rounded-0 w-full items-center justify-center p-2`}
                     onClick={() => {
                       setSelectedMenu(item.id - 1);
@@ -336,6 +366,7 @@ export default function CustomizePage() {
         </div>
         <div className="grid gap-2">
           <TooltipProvider>
+            {/* Other toolbar buttons */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -372,13 +403,14 @@ export default function CustomizePage() {
               </TooltipTrigger>
               <TooltipContent>Zoom Out</TooltipContent>
             </Tooltip>
+            {/* Delete Button */}
           </TooltipProvider>
         </div>
       </div>
 
-      {/* menu detail */}
+      {/* Menu Detail */}
       <div className="flex w-[20%] flex-col bg-[#252627]">
-        <div className="sticky top-0 z-10   px-4 py-3">
+        <div className="sticky top-0 z-10 px-4 py-3">
           <h3 className="text-lg font-medium text-white">
             {listMenuCustomize[selectedMenu].title}
           </h3>
@@ -387,13 +419,15 @@ export default function CustomizePage() {
           <div className="grid gap-2 p-4">{renderMenuDetail(selectedMenu)}</div>
         </div>
       </div>
+
+      {/* Canvas Area */}
       <div className="flex-1 bg-muted">
         <div className="flex h-full items-center justify-center">
           <div className="grid gap-4 rounded-lg bg-background p-8 shadow-lg">
             <div className="flex aspect-[4/3] h-[700px] w-[700px] flex-col items-center justify-center rounded-lg border bg-white">
               <ContainerWrapper bg={selectedImg}>
-                <div className="relative h-[300px] w-[300px] border-[1px] border-dotted border-gray-500">
-                  <canvas width="300" height="300" ref={canvaRef} />
+                <div className="relative h-full w-full border-[1px] border-dotted border-gray-500">
+                  <canvas width="700px" height="700px" ref={canvaRef} />
                 </div>
               </ContainerWrapper>
             </div>
@@ -421,9 +455,19 @@ export default function CustomizePage() {
                   }}
                 ></Button>
               </div>
-              <Button variant="outline" onClick={handleExportCanvasAsImage}>
-                Export
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleExportCanvasAsImage}>
+                  Export
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={deleteSelectedObject}
+                  disabled={!selectedObject}
+                >
+                  Xóa
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -443,6 +487,7 @@ const ContainerWrapper = styled.div<{ bg: string }>`
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+  background-position: center;
 `;
 
 const ColorPickerContainer = styled.div`

@@ -5,7 +5,6 @@ import Footer from '@/components/shared/footer';
 import { ProductMore } from '../ProductDetail/component/ProductMore';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-
 const listLogo = [
   {
     id: 1,

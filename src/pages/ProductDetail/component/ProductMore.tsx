@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ImgProduct from '@/assets/shoes/Product.jpg';
 
 const listProduct = [
   {
@@ -62,7 +63,7 @@ export const ProductMore = () => {
               <Link to="/product/1">
                 <img
                   className="h-full w-full rounded-xl object-cover duration-300 hover:scale-105"
-                  src={product.image}
+                  src={ImgProduct}
                   alt={product.name}
                 />
               </Link>

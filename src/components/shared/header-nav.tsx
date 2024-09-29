@@ -12,8 +12,7 @@ import {
 import { usePathname } from '@/routes/hooks';
 import { Link } from 'react-router-dom';
 import { Input } from '../ui/input';
-import UserNav from './user-nav';
-
+import { useRouter } from '@/routes/hooks';
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +25,7 @@ export default function HeaderNav({
   isMobileNav = false
 }: DashboardNavProps) {
   const path = usePathname();
+  const route = useRouter();
   const { isMinimized } = useSidebar();
 
   if (!items?.length) {
@@ -99,7 +99,13 @@ export default function HeaderNav({
             2 <Icons.shoppingCart className="" />
           </div>
         </Link>
-        <UserNav />
+        <div
+          className="font-sm flex cursor-pointer gap-2 rounded-lg bg-gray-300 p-2 font-bold"
+          onClick={() => route.push('/profile')}
+        >
+          <Icons.user className="" />
+        </div>
+        {/* <UserNav /> */}
       </div>
     </nav>
   );

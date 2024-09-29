@@ -24,7 +24,7 @@ interface exportCanvasAsImageProps {
   };
 }
 
-export const exportCanvasAsImage = ({
+export const exportCanvasAsImage = async ({
   canvas,
   selectedImg,
   detailPosition
@@ -33,41 +33,58 @@ export const exportCanvasAsImage = ({
     const dataUrl = canvas.toDataURL({
       format: 'png',
       quality: 1.0,
-      multiplier: 2
+      multiplier: 1
     });
 
     const imgCanvas = new Image();
     imgCanvas.src = dataUrl;
+
     const ImgBackground = new Image();
     ImgBackground.src = selectedImg;
-    ImgBackground.width = 700;
-    ImgBackground.height = 700;
-    console.log('Position', detailPosition.xPosition, detailPosition.yPosition);
-    console.log('ImgBackground', ImgBackground);
-    ImgBackground.onload = () => {
-      mergeImages(
+
+    ImgBackground.onload = async () => {
+      const maxWidth = 1000;
+      const maxHeight = 1000;
+      let width = ImgBackground.width;
+      let height = ImgBackground.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height *= maxWidth / width));
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width *= maxHeight / height));
+          height = maxHeight;
+        }
+      }
+
+      const mergedImage = await mergeImages(
         [
           {
             src: ImgBackground.src,
             x: 0,
-            y: 0
+            y: 0,
+            width,
+            height
           },
           {
             src: imgCanvas.src,
-            x: detailPosition.xPosition + 230,
-            y: detailPosition.yPosition + 220
+            x: detailPosition.xPosition,
+            y: detailPosition.yPosition
           }
         ],
         {
-          width: 1000,
-          height: 1000
+          width: 700,
+          height: 700
         }
-      ).then((b64) => {
-        const a = document.createElement('a');
-        a.href = b64;
-        a.download = 'canvas-image.png';
-        a.click();
-      });
+      );
+
+      const a = document.createElement('a');
+      a.href = mergedImage;
+      a.download = 'canvas-image.png';
+      a.click();
     };
   }
 };
