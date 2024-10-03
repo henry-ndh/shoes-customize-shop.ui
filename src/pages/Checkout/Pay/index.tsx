@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import ComboBoxFilter from '@/components/shared/combo-box-filter';
 import { Textarea } from '@/components/ui/textarea';
 import { Policy } from './components/Policy';
+import Footer from '@/components/shared/footer';
 const initialProducts = [
   {
     id: 1,
@@ -179,6 +180,7 @@ export default function CheckoutPay() {
             <Policy />
           </div>
         </div>
+        <Footer />
       </BasePages>
     </>
   );

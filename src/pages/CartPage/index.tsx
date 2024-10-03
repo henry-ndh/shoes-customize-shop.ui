@@ -4,6 +4,7 @@ import { Icons } from '@/components/ui/icons';
 import { useState } from 'react';
 import { AlertModal } from '@/components/shared/alert-modal';
 import { Link } from 'react-router-dom';
+import Footer from '@/components/shared/footer';
 const initialProducts = [
   {
     id: 1,
@@ -88,7 +89,7 @@ export default function CartPage() {
   return (
     <>
       <BasePages
-        className="relative mx-auto max-h-screen w-[80%] flex-1 overflow-y-auto p-4"
+        className="relative mx-auto max-h-screen w-[80%] flex-1  p-4"
         pageHead="Giỏ hàng | G-Local"
         breadcrumbs={[
           { title: 'Trang chủ', link: '/' },
@@ -206,6 +207,7 @@ export default function CartPage() {
             </Link>
           </div>
         </div>
+        <Footer />
       </BasePages>
     </>
   );
