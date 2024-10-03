@@ -1,11 +1,13 @@
 import BasePages from '@/components/shared/base-pages.js';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Policy } from './component/Policy';
 import { ProductMore } from './component/ProductMore';
 import Footer from '@/components/shared/footer';
 import { Link } from 'react-router-dom';
+import { useId } from '@/routes/hooks/use-id';
+import { useGetDetailShoes } from '@/queries/shoes.query';
 
 const productItem = {
   name: 'Giày thể thao nam',
@@ -62,10 +64,33 @@ const listWarranty = [
   }
 ];
 
+interface TypeProduct {
+  name: string;
+  price: string;
+  brand: string;
+}
+
 export default function ProductDetail() {
   const [imagePicked, setImagePicked] = useState(productItem.listThumbnail[0]);
   const [sizePicked, setSizePicked] = useState<string>('39');
   const [quantity, setQuantity] = useState<string>('1');
+  const [product, setProduct] = useState<TypeProduct>(productItem);
+  const id = useId();
+  const {
+    data: detailShoes,
+    isSuccess,
+    refetch
+  } = useGetDetailShoes(String(id));
+
+  useEffect(() => {
+    if (isSuccess && detailShoes) {
+      setProduct(detailShoes);
+    }
+  }, [isSuccess, detailShoes]);
+
+  useEffect(() => {
+    refetch();
+  }, [id]);
 
   const handleUpdateQuantity = (type: string) => {
     if (type === 'decrease') {
@@ -77,7 +102,6 @@ export default function ProductDetail() {
     }
   };
 
-  const { name, price, brand, listThumbnail } = productItem;
   return (
     <>
       <BasePages
@@ -91,19 +115,20 @@ export default function ProductDetail() {
       >
         <div className="mx-auto  mt-3 grid w-full grid-cols-2 rounded-2xl bg-white p-6 ">
           <div className="grid grid-cols-[20%,80%] ">
-            {/* Product Image thumbnail */}
             <div className="flex flex-col gap-4">
-              {listThumbnail.map((item) => {
-                return (
-                  <img
-                    key={item.id}
-                    src={item.url}
-                    alt="product"
-                    className={`h-[105px] w-[90px] rounded-xl p-1 transition-transform duration-300 hover:scale-105 ${item.id === imagePicked.id ? 'border-[1.5px] border-yellow' : ''}`}
-                    onClick={() => setImagePicked(item)}
-                  />
-                );
-              })}
+              {productItem.listThumbnail.map((item) => (
+                <img
+                  key={item.id}
+                  src={item.url}
+                  alt="product"
+                  className={`h-[105px] w-[90px] rounded-xl p-1 transition-transform duration-300 hover:scale-105 ${
+                    item.id === imagePicked.id
+                      ? 'border-[1.5px] border-yellow'
+                      : ''
+                  }`}
+                  onClick={() => setImagePicked(item)}
+                />
+              ))}
             </div>
 
             {/* Product Image Picked */}
@@ -117,14 +142,12 @@ export default function ProductDetail() {
           </div>
           {/* Info Product Detail */}
           <div className=" mb-[100px] ml-[5%] flex  flex-col gap-1">
-            {/* Tên sản phẩm */}
-            <h1 className="text-[20px] font-bold">{name}</h1>
+            <h1 className="text-[20px] font-bold">{product.name}</h1>
 
-            {/* Thương hiệu sản phẩm */}
             <div className="flex gap-3 text-[13px] font-semibold text-muted-foreground">
               <div>
                 Thương hiệu sản phẩm:{' '}
-                <span className="font-normal text-yellow">{brand}</span>
+                <span className="font-normal text-yellow">{product.brand}</span>
               </div>
               <div>
                 Mã sản phẩm:{' '}
@@ -132,14 +155,12 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Giá sản phẩm */}
             <div className="my-3 mt-4 text-[18px] font-semibold text-primary">
               {imagePicked.isCustomized
-                ? `Giá sản phẩm: ${price} VNĐ`
-                : `Giá sản phẩm: Chỉ từ ${price} VNĐ`}
+                ? `Giá sản phẩm: ${product.price} VNĐ`
+                : `Giá sản phẩm: Chỉ từ ${product.price} VNĐ`}
             </div>
 
-            {/* Khuyến  mãi sản phẩm */}
             <div className="relative mt-[20px] flex h-[150px] w-full items-center border-[2px] border-dashed px-10">
               <p className="absolute left-[3%] top-[-10%] flex gap-2 text-yellow backdrop-blur">
                 <Icons.gift /> KHUYẾN MÃI - ƯU ĐÃI
@@ -156,7 +177,6 @@ export default function ProductDetail() {
               </ul>
             </div>
 
-            {/* Kích thước sản phẩm */}
             <div>
               <p className="mt-5 text-[15px] font-semibold text-muted-foreground">
                 Kích thước sản phẩm :{' '}
@@ -179,9 +199,7 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Thêm vào giỏ hàng */}
             <div className="mt-8 grid h-[48px] grid-cols-[18%,80%] gap-3">
-              {/* Số lượng */}
               <div className=" flex h-full w-full items-center justify-between  border border-gray-300 ">
                 <button
                   className="flex h-full w-10 items-center justify-center rounded text-xl font-semibold hover:bg-gray-100"
@@ -200,7 +218,6 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              {/* Add vô giỏ hàng */}
               <div className="flex h-full w-full">
                 <button className=" h-full w-full border border-black   text-black ">
                   Thêm vào giỏ hàng
@@ -208,7 +225,6 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Nút mua ngay và custom */}
             <div className="mt-5 flex w-full flex-col gap-3">
               <Link to="/customize/1">
                 <Button className="flex h-[56px] w-full flex-col items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -228,14 +244,19 @@ export default function ProductDetail() {
               </p>
             </div>
 
-            {/* Bảo hành */}
             <div className="my-6 flex justify-between">
               {listWarranty.map((item, index) => {
                 const Icon = Icons[item.icon];
                 return (
                   <div key={item.id} className="flex items-center gap-2">
                     <Icon
-                      className={`${index === 0 ? 'stroke-yellow' : index === 1 ? 'stroke-blue' : 'stroke-red'} `}
+                      className={`${
+                        index === 0
+                          ? 'stroke-yellow'
+                          : index === 1
+                            ? 'stroke-blue'
+                            : 'stroke-red'
+                      } `}
                     />
                     <p>{item.title}</p>
                   </div>
@@ -243,7 +264,6 @@ export default function ProductDetail() {
               })}
             </div>
 
-            {/* Thông tin sản phẩm */}
             <div>
               <p className="text-[18px] font-semibold ">Thông tin sản phẩm</p>
               <p className="mt-2 text-[13px] text-muted-foreground">
@@ -251,7 +271,6 @@ export default function ProductDetail() {
                 màu, không bong tróc, không đau chân khi sử dụng.
               </p>
             </div>
-            {/* Chính sách bảo hành */}
             <div>
               <Policy />
             </div>

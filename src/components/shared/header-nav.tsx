@@ -13,11 +13,21 @@ import { usePathname } from '@/routes/hooks';
 import { Link } from 'react-router-dom';
 import { Input } from '../ui/input';
 import { useRouter } from '@/routes/hooks';
+import { useEffect, useState } from 'react';
+import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchShoes } from '@/queries/shoes.query';
+import { PagingModel } from '@/constants/data';
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: Dispatch<SetStateAction<boolean>>;
   isMobileNav?: boolean;
 }
+type ProductType = {
+  id: string;
+  name: string;
+  price: string;
+  sales: number;
+};
 
 export default function HeaderNav({
   items,
@@ -27,6 +37,29 @@ export default function HeaderNav({
   const path = usePathname();
   const route = useRouter();
   const { isMinimized } = useSidebar();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductType>();
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [pagingModel, setPagingModel] = useState(PagingModel);
+  const { mutateAsync: searchShoes, data, isPending } = useSearchShoes();
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      handleSearch();
+    } else {
+      setProducts([]);
+    }
+  }, [debouncedSearchTerm]);
+
+  const handleSearch = async () => {
+    const pagingSearch = { ...pagingModel, keyword: debouncedSearchTerm };
+    const res = await searchShoes(pagingSearch);
+    if (res) {
+      setProducts(res.listObjects);
+      console.log(res);
+    }
+  };
 
   if (!items?.length) {
     return null;
@@ -89,11 +122,49 @@ export default function HeaderNav({
         </TooltipProvider>
       </div>
       <div className="flex items-center justify-end space-x-3">
-        <Input
-          type="text"
-          placeholder="Tìm kiếm sản phẩm dành cho riêng bạn"
-          className="h-8 w-[80%] rounded-md bg-gray-200 px-4 py-5 text-[12px]"
-        ></Input>
+        <div className="relative w-[80%]">
+          <Input
+            type="text"
+            placeholder="Tìm kiếm sản phẩm dành cho riêng bạn"
+            className="h-8 w-full rounded-md bg-gray-200 px-4 py-5 text-[12px]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+          ></Input>
+
+          {isFocused && searchTerm && (
+            <div className="absolute left-0 right-0 top-12 z-10 max-h-48 overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
+              {isPending ? (
+                <div>Loading</div>
+              ) : products.length > 0 ? (
+                products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="cursor-pointer p-2 hover:bg-gray-100"
+                    onClick={() => {
+                      route.push(`product/${product.id}`);
+                      setSearchTerm('');
+                    }}
+                  >
+                    {product.name}
+                  </div>
+                ))
+              ) : (
+                <div>Chưa có sản phẩm phù</div>
+              )}
+            </div>
+          )}
+        </div>
+        {/* Hiển thị chi tiết sản phẩm được chọn */}
+        {/* {selectedProduct && (
+          <div className="mt-4 rounded-md border bg-gray-50 p-4">
+            <h3 className="text-xl font-bold">{selectedProduct.name}</h3>
+            <p>Giá: {selectedProduct.price}</p>
+            <p>Lượt bán: {selectedProduct.sales}</p>
+          </div>
+        )} */}
+
         <Link to="/cart">
           <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
             2 <Icons.shoppingCart className="" />

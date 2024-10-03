@@ -41,8 +41,6 @@ export function FilterProduct({
     setVisibleCount(maxVisible);
   };
 
-  console.log('selectedValue', selectedValue);
-
   return (
     <div className="flex flex-col space-y-2">
       <div className="text-sm font-bold">{nameType}</div>

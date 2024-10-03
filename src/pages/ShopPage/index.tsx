@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BasePages from '@/components/shared/base-pages.js';
 import { FilterProduct } from './FilterProduct/FilterProduct';
 import PaginationSection from '@/components/shared/pagination-section';
 import { Link } from 'react-router-dom';
 import { ProductMore } from '../ProductDetail/component/ProductMore';
 import Footer from '@/components/shared/footer';
-
+import { useGetListShoesByPaging } from '@/queries/shoes.query';
+import { PagingModel } from '@/constants/data';
 const FilterPrice = [
   {
     id: 'price1',
@@ -192,11 +193,52 @@ const ListProduct = [
   }
 ];
 
+type Product = {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+};
+
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPosts = 100;
-  const postsPerPage = 10;
-  console.log('currentPage', currentPage);
+  const [listProduct, setListProduct] = useState<Product[]>([]);
+  const { mutateAsync: getListShoes, data, error } = useGetListShoesByPaging();
+  const [paging, setPaging] = useState<typeof PagingModel>({
+    pageNumber: 1,
+    pageSize: 2,
+    keyword: '',
+    orderBy: '',
+    orderDirection: '',
+    totalRecord: 0,
+    day: 0,
+    week: 0,
+    month: 0,
+    year: 0,
+    createdBy: ''
+  });
+  useEffect(() => {
+    if (currentPage !== paging.pageNumber) {
+      const newPaging = { ...paging, pageNumber: currentPage };
+      setPaging(newPaging);
+      handleGetListShoes(newPaging);
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    handleGetListShoes(paging);
+  }, []);
+
+  const handleGetListShoes = async (paging) => {
+    const data = await getListShoes(paging);
+    if (data) {
+      console.log(data);
+      setListProduct(data.listObjects);
+      setPaging({ ...paging, totalRecord: data.paging.totalRecord });
+    } else {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -236,34 +278,35 @@ export default function ShopPage() {
             {/* show product */}
             <div className="flex  flex-col justify-between">
               <div className="grid grid-cols-4 gap-10">
-                {ListProduct.map((product) => (
-                  <div key={product.id} className="mb-4 flex flex-col">
-                    <Link
-                      to={`/product/${product.id}`}
-                      className="flex flex-col items-center"
-                    >
-                      <img
-                        loading="lazy"
-                        src={product.image}
-                        alt={product.name}
-                        className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
-                      />
-                    </Link>
-                    <p className="mt-3 text-[12px] text-muted-foreground">
-                      BEST QUALITY
-                    </p>
-                    <div className="">{product.name}</div>
-                    <div className="text-start">{product.price} đ</div>
-                  </div>
-                ))}
+                {listProduct &&
+                  listProduct.map((product) => (
+                    <div key={product.id} className="mb-4 flex flex-col">
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="flex flex-col items-center"
+                      >
+                        <img
+                          loading="lazy"
+                          src={product.image}
+                          alt={product.name}
+                          className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                        />
+                      </Link>
+                      <p className="mt-3 text-[12px] text-muted-foreground">
+                        BEST QUALITY
+                      </p>
+                      <div className="">{product.name}</div>
+                      <div className="text-start">{product.price} đ</div>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
           <div className="mt-6 ">
             <PaginationSection
-              totalPosts={totalPosts}
-              postsPerPage={postsPerPage}
-              currentPage={currentPage}
+              totalPosts={paging.totalRecord}
+              postsPerPage={paging.pageSize}
+              currentPage={paging.pageNumber}
               setCurrentPage={setCurrentPage}
             />{' '}
           </div>
