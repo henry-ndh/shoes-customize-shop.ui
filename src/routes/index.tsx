@@ -12,6 +12,8 @@ const CheckOutPay = lazy(() => import('@/pages/Checkout/Pay/index'));
 const CartPage = lazy(() => import('@/pages/CartPage/index'));
 const CustomizePage = lazy(() => import('@/pages/Customize/index'));
 const ProfilePage = lazy(() => import('@/pages/ProfilePage/index'));
+const LoginPage = lazy(() => import('@/pages/AuthPage/Login/index'));
+const RegisterPage = lazy(() => import('@/pages/AuthPage/Register/index'));
 
 // ----------------------------------------------------------------------
 
@@ -51,17 +53,20 @@ export default function AppRouter() {
         {
           path: '/profile',
           element: <ProfilePage />
+        },
+        {
+          path: '/login',
+          element: <LoginPage />
+        },
+        {
+          path: '/register',
+          element: <RegisterPage />
         }
       ]
     }
   ];
 
   const publicRoutes = [
-    {
-      path: '/login',
-      element: <SignInPage />,
-      index: true
-    },
     {
       path: '/404',
       element: <NotFound />
