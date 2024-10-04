@@ -8,13 +8,43 @@ import { Policy } from './components/Policy';
 import Footer from '@/components/shared/footer';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { UpdateOrderModel, useUpdateOrder } from '@/queries/cart.query';
+import { useToast } from '@/components/ui/use-toast';
 export default function CheckoutPay() {
   const cart = useSelector((state: RootState) => state.cart.cartDetail);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [address, setAddress] = useState('');
   const listProduct = cart?.listObjects[0];
+  const { mutateAsync: updateOrder } = useUpdateOrder();
+  const { toast } = useToast();
+
+  const handleSubmit = async () => {
+    const shipAddress = detailAddress + ', ' + address;
+    let model: UpdateOrderModel = {
+      id: listProduct.id,
+      status: 2,
+      note: name + '.' + phone,
+      shipAddress: shipAddress,
+      paymentMethod: 1,
+      amount: listProduct.orderItemDetailModels.reduce(
+        (acc, cur) => acc + cur.unitPrice * cur.quantity,
+        0
+      )
+    };
+    await updateOrder(model);
+    toast({
+      variant: 'success',
+      title: 'Đặt hàng thành công',
+      description: 'Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất'
+    });
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 1000);
+  };
+  console.log(listProduct);
 
   return (
     <>
@@ -107,14 +137,36 @@ export default function CheckoutPay() {
               Thông tin giao hàng
             </h1>
             <p className="my-4 flex justify-between gap-2">
-              <Input placeholder="Họ và tên"></Input>
-              <Input placeholder="Số điện thoại"></Input>
+              <Input
+                placeholder="Họ và tên"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Input>
+              <Input
+                placeholder="Số điện thoại"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              ></Input>
             </p>
             <div>
-              <ComboBoxFilter onFilter={(value) => console.log(value)} />
+              <ComboBoxFilter
+                onFilter={(value) => {
+                  const address =
+                    value?.province +
+                    ', ' +
+                    value?.district +
+                    ', ' +
+                    value?.ward;
+                  setAddress(address);
+                }}
+              />
             </div>
             <div>
-              <Textarea placeholder="Địa chỉ (số nhà, ấp, tên đường, tòa nhà)" />
+              <Textarea
+                placeholder="Địa chỉ (số nhà, ấp, tên đường, tòa nhà)"
+                value={detailAddress}
+                onChange={(e) => setDetailAddress(e.target.value)}
+              />
             </div>
 
             <div className="mt-3">
@@ -127,7 +179,10 @@ export default function CheckoutPay() {
                 đ
               </span>
             </div>
-            <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
+            <Button
+              className="mt-4 w-full cursor-pointer bg-yellow text-black"
+              onClick={handleSubmit}
+            >
               Đặt hàng
             </Button>
 

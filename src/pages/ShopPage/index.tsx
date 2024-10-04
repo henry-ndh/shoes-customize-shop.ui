@@ -86,7 +86,7 @@ export default function ShopPage() {
   const { mutateAsync: getListShoes, data, error } = useGetListShoesByPaging();
   const [paging, setPaging] = useState<typeof PagingModel>({
     pageNumber: 1,
-    pageSize: 2,
+    pageSize: 5,
     keyword: '',
     orderBy: '',
     orderDirection: '',
