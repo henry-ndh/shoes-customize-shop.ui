@@ -17,6 +17,10 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useSearchShoes } from '@/queries/shoes.query';
 import { PagingModel } from '@/constants/data';
+import { Button } from '../ui/button';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -40,10 +44,11 @@ export default function HeaderNav({
   const [searchTerm, setSearchTerm] = useState('');
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isFocused, setIsFocused] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<ProductType>();
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [pagingModel, setPagingModel] = useState(PagingModel);
   const { mutateAsync: searchShoes, data, isPending } = useSearchShoes();
+  const auth = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       handleSearch();
@@ -165,17 +170,32 @@ export default function HeaderNav({
           </div>
         )} */}
 
-        <Link to="/cart">
-          <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
-            2 <Icons.shoppingCart className="" />
+        {auth.isLogin ? (
+          <>
+            <Link to="/cart">
+              <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
+                2 <Icons.shoppingCart className="" />
+              </div>
+            </Link>
+            <div
+              className="font-sm flex cursor-pointer gap-2 rounded-lg bg-gray-300 p-2 font-bold"
+              onClick={() => route.push('/profile')}
+            >
+              <Icons.user className="" />
+            </div>
+          </>
+        ) : (
+          <div className="flex  gap-2 rounded-lg bg-yellow ">
+            <Button
+              onClick={() => route.push('/login')}
+              className=" h-[42px] bg-transparent text-black"
+              variant="outline"
+            >
+              Đăng nhập / Đăng ký
+            </Button>
           </div>
-        </Link>
-        <div
-          className="font-sm flex cursor-pointer gap-2 rounded-lg bg-gray-300 p-2 font-bold"
-          onClick={() => route.push('/profile')}
-        >
-          <Icons.user className="" />
-        </div>
+        )}
+
         {/* <UserNav /> */}
       </div>
     </nav>

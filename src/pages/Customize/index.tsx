@@ -12,17 +12,20 @@ import IMGShirt from '@/assets/shoes/Product.jpg';
 import IMGShirtYellow from '@/assets/shirt_yellow.png';
 import IMGShirtRed from '@/assets/shirt_red.png';
 import { SketchPicker } from 'react-color';
-import { CongCu } from './MenuDetail'; // Ensure this component accepts addShape and addImage as props
+import { CongCu } from './MenuDetail';
 import { listMenuCustomize } from '@/constants/data';
 import {
   UndoIcon,
   RedoIcon,
   ZoomInIcon,
   ZoomOutIcon,
-  DeleteIcon // Make sure to have this icon or replace it with an existing one
+  DeleteIcon
 } from '@/constants/SVGIcon';
 import { Input } from '@/components/ui/input';
 import { exportCanvasAsImage } from '@/helpers';
+import { useId } from '@/routes/hooks/use-id';
+import { useGetDetailShoesImage } from '@/queries/shoes.query';
+import { useParams } from 'react-router-dom';
 
 type StarPointsParams = {
   numPoints: number;
@@ -50,6 +53,15 @@ export default function CustomizePage() {
     xPosition: 0,
     yPosition: 0
   });
+  const id = useId();
+  const { data: dataImage } = useGetDetailShoesImage(id);
+  const [selectedImg, setSelectedImg] = useState<string>(IMGShirt);
+
+  useEffect(() => {
+    if (dataImage) {
+      setSelectedImg(dataImage.thumbnail);
+    }
+  }, [dataImage]);
 
   useEffect(() => {
     setDetailCanvas({
@@ -58,14 +70,11 @@ export default function CustomizePage() {
     } as any);
   }, []);
 
-  const [selectedImg, setSelectedImg] = useState<string>(IMGShirt);
-
   useEffect(() => {
     if (canvaRef.current) {
       const fabricCanvas = new fabric.Canvas(canvaRef.current);
       setCanvas(fabricCanvas);
 
-      // Add event listeners for selection events
       fabricCanvas.on('selection:created', function (e) {
         console.log('Object selected:', e.selected[0]);
         setSelectedObject(e.selected[0]);
@@ -267,7 +276,6 @@ export default function CustomizePage() {
 
   const deleteSelectedObject = () => {
     if (canvas && selectedObject) {
-      console.log('Deleting object:', selectedObject);
       canvas.remove(selectedObject);
       canvas.discardActiveObject();
       setSelectedObject(null);
@@ -432,7 +440,7 @@ export default function CustomizePage() {
               </ContainerWrapper>
             </div>
             <div className="flex justify-between">
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 <Button
                   variant="outline"
                   className="h-10 w-10 rounded-full bg-black hover:bg-black"
@@ -454,7 +462,7 @@ export default function CustomizePage() {
                     setSelectedImg(IMGShirtYellow);
                   }}
                 ></Button>
-              </div>
+              </div> */}
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleExportCanvasAsImage}>
                   Export

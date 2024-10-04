@@ -12,6 +12,21 @@ export interface NavItem {
   color?: string;
 }
 
+export type ShoesImagesViewModels = {
+  id: number;
+  thumbnail: string;
+  isCustomize: boolean;
+  isUserCustom: boolean;
+};
+
+export type ProductType = {
+  id: number;
+  name: string;
+  price: string;
+  brandName: string;
+  shoesImagesViewModels: ShoesImagesViewModels[];
+};
+
 export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[];
 }

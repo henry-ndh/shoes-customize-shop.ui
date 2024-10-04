@@ -12,7 +12,6 @@ import helper_get from './get';
 
 import dateandtime from 'date-and-time';
 // import __ from '../languages/index';
-
 import mergeImages from 'merge-images';
 
 interface exportCanvasAsImageProps {
@@ -42,6 +41,9 @@ export const exportCanvasAsImage = async ({
     const ImgBackground = new Image();
     ImgBackground.src = selectedImg;
 
+    console.log('ImgBackground', ImgBackground);
+    console.log('imgCanvas', imgCanvas);
+
     ImgBackground.onload = async () => {
       const maxWidth = 1000;
       const maxHeight = 1000;
@@ -59,7 +61,6 @@ export const exportCanvasAsImage = async ({
           height = maxHeight;
         }
       }
-
       const mergedImage = await mergeImages(
         [
           {
@@ -80,10 +81,11 @@ export const exportCanvasAsImage = async ({
           height: 700
         }
       );
+      console.log(mergedImage);
 
       const a = document.createElement('a');
       a.href = mergedImage;
-      a.download = 'canvas-image.png';
+      a.download = 'canvas-image.jpg';
       a.click();
     };
   }

@@ -3,12 +3,12 @@ import { PagingModel } from '@/constants/data';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const SUB_URL = `api/Shoes`;
-
+const SUB_URL_SHOES_IMAGES = `api/ShoesImages`;
 export const useGetListShoesByPaging = () => {
   return useMutation({
     mutationKey: ['get_shoes'],
     mutationFn: async (model: typeof PagingModel) => {
-      return BaseRequest.Post(`/${SUB_URL}/get-all-shoes-by-paging`, model);
+      return BaseRequest.Post(`/${SUB_URL}/get-all-shoes`, model);
     }
   });
 };
@@ -26,7 +26,16 @@ export const useSearchShoes = () => {
   return useMutation({
     mutationKey: ['search_shoes'],
     mutationFn: async (model: typeof PagingModel) => {
-      return await BaseRequest.Post(`/${SUB_URL}/search-shoes-by-key`, model);
+      return await BaseRequest.Post(`/${SUB_URL}/filter-shoes-by-key`, model);
+    }
+  });
+};
+
+export const useGetDetailShoesImage = (id) => {
+  return useQuery({
+    queryKey: ['get_detail_shoes_image'],
+    queryFn: async () => {
+      return BaseRequest.Get(`/${SUB_URL_SHOES_IMAGES}/get-shoes-image/${id}`);
     }
   });
 };

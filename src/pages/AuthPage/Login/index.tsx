@@ -26,7 +26,6 @@ export default function LoginPage() {
   const [error, setError] = useState<FormError>({});
   const router = useRouter();
   const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.auth);
 
   useLayoutEffect(() => {
     var token = helper.cookie_get('AT');

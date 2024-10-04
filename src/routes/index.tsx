@@ -71,7 +71,7 @@ export default function AppRouter() {
       element: <NotFound />
     },
     {
-      path: '/customize/1',
+      path: '/customize/:productId/:id',
       element: <CustomizePage />
     },
     {

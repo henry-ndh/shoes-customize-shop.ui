@@ -7,6 +7,8 @@ import { ProductMore } from '../ProductDetail/component/ProductMore';
 import Footer from '@/components/shared/footer';
 import { useGetListShoesByPaging } from '@/queries/shoes.query';
 import { PagingModel } from '@/constants/data';
+import { ProductType } from '@/types';
+
 const FilterPrice = [
   {
     id: 'price1',
@@ -78,131 +80,9 @@ const FilterProductType = [
   }
 ];
 
-const ListProduct = [
-  {
-    id: 1,
-    name: 'Sneaker Air Jordan 1',
-    price: '2,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 2,
-    name: 'Giày lười nam',
-    price: '500,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 3,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 4,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 5,
-    name: 'Sneaker Nike Air Force 1',
-    price: '1,500,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 6,
-    name: 'Giày thể thao Adidas',
-    price: '3,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 1,
-    name: 'Sneaker Air Jordan 1',
-    price: '2,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 2,
-    name: 'Giày lười nam',
-    price: '500,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 3,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 4,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 5,
-    name: 'Sneaker Nike Air Force 1',
-    price: '1,500,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 6,
-    name: 'Giày thể thao Adidas',
-    price: '3,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 1,
-    name: 'Sneaker Air Jordan 1',
-    price: '2,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 2,
-    name: 'Giày lười nam',
-    price: '500,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 3,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 4,
-    name: 'Giày tây nam',
-    price: '1,000,000',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  }
-];
-
-type Product = {
-  id: number;
-  name: string;
-  price: string;
-  image: string;
-};
-
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [listProduct, setListProduct] = useState<Product[]>([]);
+  const [listProduct, setListProduct] = useState<ProductType[]>([]);
   const { mutateAsync: getListShoes, data, error } = useGetListShoesByPaging();
   const [paging, setPaging] = useState<typeof PagingModel>({
     pageNumber: 1,
@@ -287,9 +167,9 @@ export default function ShopPage() {
                       >
                         <img
                           loading="lazy"
-                          src={product.image}
+                          src={product.shoesImagesViewModels[0].thumbnail}
                           alt={product.name}
-                          className="h-40 w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                          className="h-[230px] w-full rounded-[5px] object-cover duration-500 hover:scale-105"
                         />
                       </Link>
                       <p className="mt-3 text-[12px] text-muted-foreground">
