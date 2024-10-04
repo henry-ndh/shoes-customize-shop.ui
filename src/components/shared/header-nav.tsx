@@ -48,7 +48,6 @@ export default function HeaderNav({
   const { mutateAsync: searchShoes, data, isPending } = useSearchShoes();
   const auth = useSelector((state: RootState) => state.auth);
   const cart = useSelector((state: RootState) => state.cart.cartDetail);
-  console.log(cart);
   useEffect(() => {
     if (debouncedSearchTerm) {
       handleSearch();

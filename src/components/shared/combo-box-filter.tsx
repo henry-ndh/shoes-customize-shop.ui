@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -15,19 +16,21 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
+import {
+  useGetProvince,
+  useGetDistrict,
+  useGetWard
+} from '@/queries/location.query';
 
-interface Ward {
-  name: string;
+interface Option {
+  value: string;
+  label: string;
 }
 
-interface District {
-  name: string;
-  wards: Ward[];
-}
-
-interface Province {
-  name: string;
-  districts: District[];
+interface FilterValues {
+  province: string;
+  district: string;
+  ward: string;
 }
 
 interface FrameworkPopoverProps {
@@ -37,48 +40,10 @@ interface FrameworkPopoverProps {
   setValue: (value: string) => void;
   placeholder: string;
   disabled: boolean;
-  options: { value: string; label: string }[];
+  options: Option[];
 }
 
-interface ComboBoxFilterProps {
-  onFilter: (value: {
-    province: string;
-    district: string;
-    ward: string;
-  }) => void;
-}
-
-// Dữ liệu mẫu cho Tỉnh/Thành phố, Quận/Huyện, Phường/Xã
-const provinces: Province[] = [
-  {
-    name: 'Hà Nội',
-    districts: [
-      {
-        name: 'Quận Hoàn Kiếm',
-        wards: [{ name: 'Phường Hàng Bạc' }, { name: 'Phường Hàng Đào' }]
-      },
-      {
-        name: 'Quận Ba Đình',
-        wards: [{ name: 'Phường Ngọc Hà' }, { name: 'Phường Điện Biên' }]
-      }
-    ]
-  },
-  {
-    name: 'TP. Hồ Chí Minh',
-    districts: [
-      {
-        name: 'Quận 1',
-        wards: [{ name: 'Phường Bến Nghé' }, { name: 'Phường Bến Thành' }]
-      },
-      {
-        name: 'Quận 3',
-        wards: [{ name: 'Phường Võ Thị Sáu' }, { name: 'Phường 9' }]
-      }
-    ]
-  }
-];
-
-function FrameworkPopover({
+const FrameworkPopover: React.FC<FrameworkPopoverProps> = ({
   open,
   setOpen,
   value,
@@ -86,7 +51,7 @@ function FrameworkPopover({
   placeholder,
   disabled,
   options
-}: FrameworkPopoverProps) {
+}) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -133,36 +98,67 @@ function FrameworkPopover({
       </PopoverContent>
     </Popover>
   );
+};
+
+interface ComboBoxFilterProps {
+  onFilter: (value: FilterValues) => void;
 }
 
-export default function ComboBoxFilter({ onFilter }: ComboBoxFilterProps) {
-  const [province, setProvince] = React.useState<string>('');
-  const [district, setDistrict] = React.useState<string>('');
-  const [ward, setWard] = React.useState<string>('');
-  const [openProvince, setOpenProvince] = React.useState<boolean>(false);
-  const [openDistrict, setOpenDistrict] = React.useState<boolean>(false);
-  const [openWard, setOpenWard] = React.useState<boolean>(false);
+const ComboBoxFilter: React.FC<ComboBoxFilterProps> = ({ onFilter }) => {
+  // State for selected values
+  const [province, setProvince] = useState<string>('');
+  const [district, setDistrict] = useState<string>('');
+  const [ward, setWard] = useState<string>('');
 
-  const [districtOptions, setDistrictOptions] = React.useState<
-    { value: string; label: string }[]
-  >([]);
-  const [wardOptions, setWardOptions] = React.useState<
-    { value: string; label: string }[]
-  >([]);
+  // State for popover open status
+  const [openProvince, setOpenProvince] = useState<boolean>(false);
+  const [openDistrict, setOpenDistrict] = useState<boolean>(false);
+  const [openWard, setOpenWard] = useState<boolean>(false);
 
-  // Cập nhật danh sách Quận/Huyện khi chọn Tỉnh/Thành phố
-  React.useEffect(() => {
+  // State for options
+  const [provinceOptions, setProvinceOptions] = useState<Option[]>([]);
+  const [districtOptions, setDistrictOptions] = useState<Option[]>([]);
+  const [wardOptions, setWardOptions] = useState<Option[]>([]);
+
+  const { data: listProvinces, isLoading: loadingProvinces } = useGetProvince();
+  const {
+    mutateAsync: getDistrict,
+    data: listDistricts,
+    isPending: loadingDistricts
+  } = useGetDistrict();
+  const { mutateAsync: getWard, isPending: loadingWards } = useGetWard();
+
+  useEffect(() => {
+    if (listProvinces) {
+      const mappedProvinces = listProvinces.map((p: any) => ({
+        value: p.name,
+        label: p.name
+      }));
+      setProvinceOptions(mappedProvinces);
+    }
+  }, [listProvinces]);
+
+  useEffect(() => {
     if (province) {
-      const selectedProvince = provinces.find((p) => p.name === province);
+      const selectedProvince = listProvinces.find(
+        (p: any) => p.name === province
+      );
       if (selectedProvince) {
-        setDistrictOptions(
-          selectedProvince.districts.map((d) => ({
-            value: d.name,
-            label: d.name
-          }))
-        );
+        const fetchDistrict = async () => {
+          try {
+            const res = await getDistrict(selectedProvince.id);
+            const mappedDistricts = res.map((d: any) => ({
+              value: d.name,
+              label: d.name
+            }));
+            setDistrictOptions(mappedDistricts);
+          } catch (error) {
+            console.error('Error fetching districts:', error);
+            setDistrictOptions([]);
+          }
+        };
+        fetchDistrict();
       }
-      // Reset lựa chọn Quận/Huyện và Phường/Xã
       setDistrict('');
       setWard('');
       setWardOptions([]);
@@ -172,43 +168,42 @@ export default function ComboBoxFilter({ onFilter }: ComboBoxFilterProps) {
       setWardOptions([]);
       setWard('');
     }
-  }, [province]);
+  }, [province, listProvinces, getDistrict]);
 
-  // Cập nhật danh sách Phường/Xã khi chọn Quận/Huyện
-  React.useEffect(() => {
+  useEffect(() => {
     if (district) {
-      const selectedProvince = provinces.find((p) => p.name === province);
-      const selectedDistrict = selectedProvince?.districts.find(
-        (d) => d.name === district
+      const selectedDistrict = listDistricts?.find(
+        (d: any) => d.name === district
       );
       if (selectedDistrict) {
-        setWardOptions(
-          selectedDistrict.wards.map((w) => ({
-            value: w.name,
-            label: w.name
-          }))
-        );
+        const fetchWard = async () => {
+          try {
+            const res = await getWard(selectedDistrict.id);
+            const mappedWards = res.map((w: any) => ({
+              value: w.name,
+              label: w.name
+            }));
+            setWardOptions(mappedWards);
+          } catch (error) {
+            console.error('Error fetching wards:', error);
+            setWardOptions([]);
+          }
+        };
+        fetchWard();
       }
-      // Reset lựa chọn Phường/Xã
+      // Reset ward selection
       setWard('');
     } else {
       setWardOptions([]);
       setWard('');
     }
-  }, [district]);
+  }, [district, listDistricts, getWard]);
 
-  // Gọi hàm onFilter khi đã chọn đủ Tỉnh/Thành phố, Quận/Huyện, Phường/Xã
-  React.useEffect(() => {
+  useEffect(() => {
     if (province && district && ward) {
       onFilter({ province, district, ward });
     }
   }, [province, district, ward, onFilter]);
-
-  // Danh sách Tỉnh/Thành phố
-  const provinceOptions = provinces.map((p) => ({
-    value: p.name,
-    label: p.name
-  }));
 
   return (
     <div className="my-4 grid w-full grid-cols-3 gap-3">
@@ -220,7 +215,7 @@ export default function ComboBoxFilter({ onFilter }: ComboBoxFilterProps) {
           value={province}
           setValue={setProvince}
           placeholder="Tỉnh/Thành phố"
-          disabled={false}
+          disabled={loadingProvinces}
           options={provinceOptions}
         />
       </div>
@@ -232,7 +227,7 @@ export default function ComboBoxFilter({ onFilter }: ComboBoxFilterProps) {
           value={district}
           setValue={setDistrict}
           placeholder="Quận/Huyện"
-          disabled={!province}
+          disabled={!province || loadingDistricts}
           options={districtOptions}
         />
       </div>
@@ -244,10 +239,12 @@ export default function ComboBoxFilter({ onFilter }: ComboBoxFilterProps) {
           value={ward}
           setValue={setWard}
           placeholder="Phường/Xã"
-          disabled={!district}
+          disabled={!district || loadingWards}
           options={wardOptions}
         />
       </div>
     </div>
   );
-}
+};
+
+export default ComboBoxFilter;

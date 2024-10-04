@@ -32,10 +32,10 @@ export const useGetProvince = () => {
   });
 };
 
-export const useGetDistrict = (provinceId: string) => {
+export const useGetDistrict = () => {
   return useMutation({
     mutationKey: ['get_district'],
-    mutationFn: async () => {
+    mutationFn: async (provinceId: string) => {
       return BaseRequest.Get(
         `/${SUB_URL}/get-list-district-by-province-id?id=${provinceId}`
       );
@@ -43,10 +43,10 @@ export const useGetDistrict = (provinceId: string) => {
   });
 };
 
-export const useGetWard = (districtId: string) => {
+export const useGetWard = () => {
   return useMutation({
     mutationKey: ['get_ward'],
-    mutationFn: async () => {
+    mutationFn: async (districtId: string) => {
       return BaseRequest.Get(
         `/${SUB_URL}/get-list-ward-by-district-id?id=${districtId}`
       );
