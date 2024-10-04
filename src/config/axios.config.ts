@@ -45,7 +45,7 @@ var BaseRequest = {
   },
   Put: async (url: string, data: any) => {
     try {
-      const response = await axios.put(url, data);
+      const response = await axios.put<any>(url, data);
       return response.data;
     } catch (err) {
       console.log('err', err);

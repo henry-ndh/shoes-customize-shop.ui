@@ -60,7 +60,6 @@ export default function CartPage() {
   const [productToDelete, setProductToDelete] = useState(null);
   const cart = useSelector((state: RootState) => state.cart.cartDetail);
   const listProduct = cart?.listObjects[0];
-  console.log('listProduct', listProduct);
 
   const handleUpdateQuantity = (id, type) => {
     setProducts((prevProducts) =>

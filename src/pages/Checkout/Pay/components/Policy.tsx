@@ -48,6 +48,19 @@ export const Policy = () => {
           </div>
         </AccordionContent>
       </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger className="text-[18px] ">Giá tiền</AccordionTrigger>
+        <AccordionContent>
+          <div className="flex flex-col gap-2">
+            <p>
+              Giá tiền của G-Shoes đối với những đơn hàng có sản phẩm custom sẽ
+              được admin xác nhận lại với bạn trước khi gửi hàng. Đối với những
+              đơn hàng không custom, giá tiền sẽ được hiển thị ngay trên trang
+              sản phẩm
+            </p>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
     </Accordion>
   );
 };

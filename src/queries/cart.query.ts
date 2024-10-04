@@ -22,6 +22,15 @@ export type AddCartModel = {
   size: string;
 };
 
+export type UpdateOrderModel = {
+  id: number;
+  status: number;
+  note: string;
+  shipAddress: string;
+  paymentMethod: number;
+  amount: number;
+};
+
 export const useCreateCart = () => {
   return useMutation({
     mutationKey: ['create-cart'],
@@ -32,10 +41,11 @@ export const useCreateCart = () => {
 };
 
 export const useGetItemInCart = () => {
+  let model = { ...PagingModel, orderStatus: 1 };
   return useQuery({
     queryKey: ['get_item_in_cart'],
     queryFn: async () => {
-      return BaseRequest.Post(`/${SUB_URL}/get-all-orders`, PagingModel);
+      return BaseRequest.Post(`/${SUB_URL}/filter-all-orders-by-status`, model);
     }
   });
 };
@@ -45,6 +55,15 @@ export const useAddItemToCart = () => {
     mutationKey: ['add_item_to_cart'],
     mutationFn: async (model: AddCartModel) => {
       return BaseRequest.Post(`/${SUB_URL}/add-item-to-order`, model);
+    }
+  });
+};
+
+export const useUpdateOrder = () => {
+  return useMutation({
+    mutationKey: ['update_order'],
+    mutationFn: async (model: any) => {
+      return BaseRequest.Put(`/${SUB_URL}/update-order`, model);
     }
   });
 };

@@ -1,60 +1,20 @@
 import BasePages from '@/components/shared/base-pages.js';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import ComboBoxFilter from '@/components/shared/combo-box-filter';
 import { Textarea } from '@/components/ui/textarea';
 import { Policy } from './components/Policy';
 import Footer from '@/components/shared/footer';
-const initialProducts = [
-  {
-    id: 1,
-    name: 'Giày thể thao nam',
-    price: 100000,
-    quantity: 1,
-    isCustomized: false,
-    brand: 'Nike',
-    size: '38',
-    image:
-      'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg'
-  },
-  {
-    id: 2,
-    name: 'Jordan 1',
-    price: 200000,
-    quantity: 1,
-    isCustomized: true,
-    brand: 'Adidas',
-    size: '39',
-    image:
-      'https://product.hstatic.net/1000011840/product/giay-trang-sneaker-cho-be-gh87-5_b94398fdb35e49f08025e39bd4c230a5_master.jpg'
-  },
-  {
-    id: 3,
-    name: 'Nike Air Force 1',
-    price: 300000,
-    quantity: 1,
-    brand: 'Nike',
-    isCustomized: false,
-    size: '40',
-    image: 'https://pos.nvncdn.com/205d8e-20707/ps/20231225_NGJyTgrVez.jpeg'
-  },
-  {
-    id: 4,
-    name: 'Air Jordan 1',
-    price: 300000,
-    quantity: 1,
-    size: '41',
-    brand: 'Adidas',
-    isCustomized: true,
-    image:
-      'https://product.hstatic.net/1000230642/product/giay-the-thao-nam-biti-s-hunter-x-2k22-jet-dsmh02202-luacw-color-den_aa78bf9ad04645369f6bbdb9427a1b33.jpg'
-  }
-];
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useState } from 'react';
 
 export default function CheckoutPay() {
-  const products = initialProducts;
+  const cart = useSelector((state: RootState) => state.cart.cartDetail);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const listProduct = cart?.listObjects[0];
 
   return (
     <>
@@ -76,20 +36,17 @@ export default function CheckoutPay() {
                 <Icons.money className="stroke-orange" />
                 Thông tin thanh toán
               </h1>
-              {products.map((product) => (
+              {listProduct?.orderItemDetailModels?.map((product) => (
                 <div className="flex w-full" key={product.id}>
                   <img
                     className="h-[100px] w-[150px] object-cover duration-300 hover:scale-105"
-                    src={product.image}
-                    alt={product.name}
+                    src={product.shoesImage.thumbnail}
+                    alt="#"
                   />
                   <div className="ml-3 mt-3 flex w-full justify-between">
                     {/* Tên và size sản phẩm */}
                     <div>
-                      <p>
-                        {product.name}{' '}
-                        {product.isCustomized ? `(Sản phẩm custom)` : ''}{' '}
-                      </p>
+                      <p>{product.shoesModel.name} </p>
                       <p className="text-muted-foreground">
                         Size: {product.size}
                       </p>
@@ -104,7 +61,7 @@ export default function CheckoutPay() {
                       {/* Giá */}
                       <div>
                         <p>
-                          {product.isCustomized ? (
+                          {/* {product.isCustomized ? (
                             <>
                               Chỉ từ:{' '}
                               <span className="text-orange">
@@ -114,13 +71,14 @@ export default function CheckoutPay() {
                             </>
                           ) : (
                             <>
-                              Giá:{' '}
-                              <span className="text-orange">
-                                {product.price * product.quantity}
-                              </span>{' '}
-                              đ
+                           
                             </>
-                          )}
+                          )} */}
+                          Giá:{' '}
+                          <span className="text-orange">
+                            {product.unitPrice * product.quantity}
+                          </span>{' '}
+                          đ
                         </p>
                       </div>
                     </div>
@@ -160,23 +118,19 @@ export default function CheckoutPay() {
             </div>
 
             <div className="mt-3">
-              Tổng tiền ({products.length} sản phẩm):
+              Tổng tiền tạm tính
               <span className="text-bold ml-2 text-orange ">
-                {products.reduce(
-                  (acc, cur) => acc + cur.price * cur.quantity,
+                {listProduct?.orderItemDetailModels?.reduce(
+                  (acc, cur) => acc + cur.unitPrice * cur.quantity,
                   0
                 )}{' '}
                 đ
               </span>
             </div>
-            <Link to="/checkout-pay/1">
-              <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
-                Đặt hàng
-              </Button>
-              <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
-                Gửi đơn hàng cho GLocal
-              </Button>
-            </Link>
+            <Button className="mt-4 w-full cursor-pointer bg-yellow text-black">
+              Đặt hàng
+            </Button>
+
             <Policy />
           </div>
         </div>
