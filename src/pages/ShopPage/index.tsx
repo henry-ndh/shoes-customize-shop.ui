@@ -5,9 +5,13 @@ import PaginationSection from '@/components/shared/pagination-section';
 import { Link } from 'react-router-dom';
 import { ProductMore } from '../ProductDetail/component/ProductMore';
 import Footer from '@/components/shared/footer';
-import { useGetListShoesByPaging } from '@/queries/shoes.query';
+import {
+  useGetListShoesByPaging,
+  useGetShoesByBrand
+} from '@/queries/shoes.query';
 import { PagingModel } from '@/constants/data';
 import { ProductType } from '@/types';
+import { useGetAllBrands } from '@/queries/brand.query';
 
 const FilterPrice = [
   {
@@ -39,18 +43,13 @@ const FilterPrice = [
 
 const FilterProductType = [
   {
-    id: 'type1',
-    title: 'Sneaker',
-    value: 'sneaker'
-  },
-  {
     id: 'type2',
-    title: 'Giày lười',
-    value: 'giay-loi'
+    title: 'Yordan',
+    value: 'Yordan'
   },
   {
     id: 'type3',
-    title: 'Giày tây',
+    title: 'Nike',
     value: 'giay-tay'
   },
   {
@@ -97,6 +96,37 @@ export default function ShopPage() {
     year: 0,
     createdBy: ''
   });
+  const { data: dataBrand } = useGetAllBrands();
+  const [selectedBrand, setSelectedBrand] = useState<string>('');
+  const listBrands = dataBrand?.listObjects.map((item, index) => {
+    return {
+      id: index,
+      title: item.name,
+      value: item.name
+    };
+  });
+
+  const { mutateAsync: getShoesByBrand } = useGetShoesByBrand();
+
+  useEffect(() => {
+    if (selectedBrand !== '') {
+      handleGetShoesByBrand();
+    } else {
+      console.log('zo');
+      handleGetListShoes(paging);
+    }
+  }, [selectedBrand]);
+  const handleGetShoesByBrand = async () => {
+    if (selectedBrand !== '') {
+      let model = { ...paging, brandName: selectedBrand };
+      const data = await getShoesByBrand(model);
+      if (data) {
+        setListProduct(data.listObjects);
+        setPaging({ ...paging, totalRecord: data.paging.totalRecord });
+      } else {
+      }
+    }
+  };
   useEffect(() => {
     if (currentPage !== paging.pageNumber) {
       const newPaging = { ...paging, pageNumber: currentPage };
@@ -112,7 +142,6 @@ export default function ShopPage() {
   const handleGetListShoes = async (paging) => {
     const data = await getListShoes(paging);
     if (data) {
-      console.log(data);
       setListProduct(data.listObjects);
       setPaging({ ...paging, totalRecord: data.paging.totalRecord });
     } else {
@@ -136,29 +165,31 @@ export default function ShopPage() {
             <div className="">
               <h1 className="text-[20px] font-bold">G-Local Shoes</h1>
               <div className="ml-3 mt-7">
-                <FilterProduct
+                {/* <FilterProduct
                   items={FilterPrice}
                   nameType="GIÁ TIỀN"
                   onFilterChange={(value) => {
                     console.log(value);
                   }}
-                />
+                /> */}
               </div>
               <div className="ml-3 mt-10">
-                <FilterProduct
-                  items={FilterProductType}
-                  nameType="DÒNG SẢN PHẨM"
-                  onFilterChange={(value) => {
-                    console.log(value);
-                  }}
-                />
+                {dataBrand?.listObjects.length > 0 && (
+                  <FilterProduct
+                    items={listBrands}
+                    nameType="DÒNG SẢN PHẨM"
+                    onFilterChange={(value) => {
+                      setSelectedBrand(value);
+                    }}
+                  />
+                )}
               </div>
             </div>
 
             {/* show product */}
             <div className="flex  flex-col justify-between">
               <div className="grid grid-cols-4 gap-10">
-                {listProduct &&
+                {listProduct && listProduct.length > 0 ? (
                   listProduct.map((product) => (
                     <div key={product.id} className="mb-4 flex flex-col">
                       <Link
@@ -178,7 +209,12 @@ export default function ShopPage() {
                       <div className="">{product.name}</div>
                       <div className="text-start">{product.price} đ</div>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <div className="flex w-full justify-center">
+                    <p>Sản phẩm đang được cập nhập thêm...</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

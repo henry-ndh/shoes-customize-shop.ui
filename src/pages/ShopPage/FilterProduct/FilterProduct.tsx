@@ -44,22 +44,23 @@ export function FilterProduct({
   return (
     <div className="flex flex-col space-y-2">
       <div className="text-sm font-bold">{nameType}</div>
-      {items.slice(0, visibleCount).map((item) => (
-        <div key={item.id} className="flex gap-2">
-          <Checkbox
-            id={item.id}
-            checked={selectedValue === item.value}
-            onCheckedChange={() => handleSelect(item.value)}
-            className="peer"
-          />
-          <label
-            htmlFor={item.id}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {item.title}
-          </label>
-        </div>
-      ))}
+      {items.length > 0 &&
+        items?.slice(0, visibleCount).map((item) => (
+          <div key={item.id} className="flex gap-2">
+            <Checkbox
+              id={item.id}
+              checked={selectedValue === item.value}
+              onCheckedChange={() => handleSelect(item.value)}
+              className="peer"
+            />
+            <label
+              htmlFor={item.id}
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              {item.title}
+            </label>
+          </div>
+        ))}
 
       {items.length > maxVisible && (
         <div className="mt-2">

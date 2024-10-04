@@ -39,3 +39,12 @@ export const useGetDetailShoesImage = (id) => {
     }
   });
 };
+
+export const useGetShoesByBrand = () => {
+  return useMutation({
+    mutationKey: ['get_shoes_by_brand'],
+    mutationFn: async (model: any) => {
+      return BaseRequest.Post(`/${SUB_URL}/filter-shoes-by-brand`, model);
+    }
+  });
+};
