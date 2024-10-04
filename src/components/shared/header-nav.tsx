@@ -20,7 +20,6 @@ import { PagingModel } from '@/constants/data';
 import { Button } from '../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -48,7 +47,8 @@ export default function HeaderNav({
   const [pagingModel, setPagingModel] = useState(PagingModel);
   const { mutateAsync: searchShoes, data, isPending } = useSearchShoes();
   const auth = useSelector((state: RootState) => state.auth);
-
+  const cart = useSelector((state: RootState) => state.cart.cartDetail);
+  console.log(cart);
   useEffect(() => {
     if (debouncedSearchTerm) {
       handleSearch();
@@ -174,7 +174,8 @@ export default function HeaderNav({
           <>
             <Link to="/cart">
               <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
-                2 <Icons.shoppingCart className="" />
+                {cart.listObjects[0]?.orderItemDetailModels.length}
+                <Icons.shoppingCart className="" />
               </div>
             </Link>
             <div

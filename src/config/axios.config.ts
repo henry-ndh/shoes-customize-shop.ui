@@ -4,7 +4,7 @@ import helpers from '../helpers';
 const baseURL = 'https://localhost:7093/';
 
 const onRequestSuccess = (config: any) => {
-  config.headers['Authorization'] = `Bearer ${helpers.cookie_get('token')}`;
+  config.headers['Authorization'] = `Bearer ${helpers.cookie_get('AT')}`;
   return config;
 };
 const onRequestError = (error: any) => {
@@ -38,7 +38,6 @@ var BaseRequest = {
   Post: async (url: string, data: any) => {
     try {
       const response = await axios.post<any>(url, data);
-      console.log('response', response);
       return response.data;
     } catch (err) {
       console.log('err', err);

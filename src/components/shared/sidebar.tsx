@@ -2,7 +2,6 @@ import HeaderNav from '@/components/shared/header-nav';
 import { navItems, subNavItems } from '@/constants/data';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/ui/icons';
-
 export default function Sidebar() {
   return (
     <nav

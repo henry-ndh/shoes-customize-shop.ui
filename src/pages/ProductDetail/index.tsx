@@ -10,33 +10,18 @@ import { useId } from '@/routes/hooks/use-id';
 import { useGetDetailShoes } from '@/queries/shoes.query';
 import { ProductType, ShoesImagesViewModels } from '@/types';
 import { useRouter } from '@/routes/hooks';
-const productItem = {
-  name: 'Giày thể thao nam',
-  price: '1.500.000',
-  brand: 'Nike',
-  listThumbnail: [
-    {
-      id: 1,
-      url: 'https://shopgiayreplica.com/wp-content/uploads/2020/06/Giay-Saint-Laurent-Court-Classic-like-auth-6.jpg',
-      isCustomized: false
-    },
-    {
-      id: 2,
-      url: 'https://product.hstatic.net/1000011840/product/giay-trang-sneaker-cho-be-gh87-5_b94398fdb35e49f08025e39bd4c230a5_master.jpg',
-      isCustomized: true
-    },
-    {
-      id: 3,
-      url: 'https://pos.nvncdn.com/205d8e-20707/ps/20231225_NGJyTgrVez.jpeg',
-      isCustomized: false
-    },
-    {
-      id: 4,
-      url: 'https://product.hstatic.net/1000230642/product/giay-the-thao-nam-biti-s-hunter-x-2k22-jet-dsmh02202-luacw-color-den_aa78bf9ad04645369f6bbdb9427a1b33.jpg',
-      isCustomized: true
-    }
-  ]
-};
+import {
+  AddCartModel,
+  CreateCartModel,
+  useAddItemToCart,
+  useCreateCart,
+  useGetItemInCart
+} from '@/queries/cart.query';
+import { useToast } from '@/components/ui/use-toast';
+import { useDispatch } from 'react-redux';
+import { updateCart } from '@/redux/cart.slice';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const listGift = [
   'Tặng 1 đôi tất',
@@ -65,24 +50,28 @@ const listWarranty = [
   }
 ];
 
-interface TypeProduct {
-  name: string;
-  price: string;
-  brand: string;
-}
-
 export default function ProductDetail() {
+  const id = useId();
+  const router = useRouter();
   const [imagePicked, setImagePicked] = useState<ShoesImagesViewModels>();
   const [sizePicked, setSizePicked] = useState<string>('39');
   const [quantity, setQuantity] = useState<string>('1');
   const [product, setProduct] = useState<ProductType>();
-  const id = useId();
-  const router = useRouter();
+  const dispatch = useDispatch();
+  const { toast } = useToast();
   const {
     data: detailShoes,
     isSuccess,
     refetch
   } = useGetDetailShoes(String(id));
+  // query here
+  const { mutateAsync: createCart } = useCreateCart();
+  const { mutateAsync: addItem } = useAddItemToCart();
+  const { refetch: getItemInCart } = useGetItemInCart();
+  // redux
+  const cartObject = useSelector(
+    (state: RootState) => state.cart.cartDetail.listObjects
+  );
 
   useLayoutEffect(() => {
     if (isSuccess && detailShoes) {
@@ -95,8 +84,6 @@ export default function ProductDetail() {
     refetch();
   }, [id]);
 
-  console.log(imagePicked);
-
   const handleUpdateQuantity = (type: string) => {
     if (type === 'decrease') {
       if (quantity === '1') return;
@@ -105,6 +92,39 @@ export default function ProductDetail() {
     if (type === 'increase') {
       setQuantity((prev) => (parseInt(prev) + 1).toString());
     }
+  };
+
+  const handleAddToCart = async () => {
+    if (cartObject.length > 0) {
+      let model: AddCartModel = {
+        shoesId: Number(id),
+        quantity: Number(quantity),
+        shoesImageId: imagePicked?.id || 0,
+        orderId: cartObject[0].id,
+        size: sizePicked
+      };
+      await addItem(model);
+    } else {
+      let model: CreateCartModel = {
+        note: '',
+        shipAddress: 'Đang cập nhật',
+        paymentMethod: 1,
+        shoesId: Number(id),
+        quantity: Number(quantity),
+        shoesImageId: imagePicked?.id || 0,
+        size: sizePicked
+      };
+      await createCart(model);
+    }
+    const res = await getItemInCart();
+    if (res) {
+      dispatch(updateCart(res.data));
+    }
+    toast({
+      variant: 'success',
+      title: 'Thêm vào giỏ hàng thành công ',
+      description: 'Sản phẩm đã được thêm vào giỏ hàng của bạn !'
+    });
   };
 
   return (
@@ -227,7 +247,10 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="flex h-full w-full">
-                  <button className=" h-full w-full border border-black   text-black ">
+                  <button
+                    className=" h-full w-full border border-black   text-black "
+                    onClick={handleAddToCart}
+                  >
                     Thêm vào giỏ hàng
                   </button>
                 </div>

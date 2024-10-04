@@ -5,6 +5,9 @@ import { useState } from 'react';
 import { AlertModal } from '@/components/shared/alert-modal';
 import { Link } from 'react-router-dom';
 import Footer from '@/components/shared/footer';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
 const initialProducts = [
   {
     id: 1,
@@ -55,6 +58,9 @@ export default function CartPage() {
   const [products, setProducts] = useState(initialProducts);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+  const cart = useSelector((state: RootState) => state.cart.cartDetail);
+  const listProduct = cart?.listObjects[0];
+  console.log('listProduct', listProduct);
 
   const handleUpdateQuantity = (id, type) => {
     setProducts((prevProducts) =>
@@ -101,26 +107,26 @@ export default function CartPage() {
           isOpen={isAlertModalOpen}
           title="Thông báo"
           onClose={() => setIsAlertModalOpen(false)}
-          onConfirm={handleDeleteProduct} // Xác nhận xóa sản phẩm
+          onConfirm={handleDeleteProduct}
           description="Bạn chắc chắc muốn xóa sản phẩm này chứ?"
         />
 
         <h1 className="mt-4">Giỏ hàng</h1>
         <div className="mt-4 grid grid-cols-[70%,30%] gap-4">
           <div className="flex flex-col gap-4 rounded-2xl bg-white p-4">
-            {products.map((product) => (
+            {listProduct?.orderItemDetailModels?.map((product) => (
               <div className="flex w-full" key={product.id}>
                 <img
                   className="h-[100px] w-[150px] object-cover duration-300 hover:scale-105"
-                  src={product.image}
-                  alt={product.name}
+                  src={product.shoesImage.thumbnail}
+                  alt="#"
                 />
                 <div className="ml-3 mt-3 flex w-full justify-between">
                   {/* Tên và size sản phẩm */}
                   <div>
                     <p>
-                      {product.name}{' '}
-                      {product.isCustomized ? `(Sản phẩm custom)` : ''}{' '}
+                      {product.shoesModel.name}{' '}
+                      {/* {product.isCustomized ? `(Sản phẩm custom)` : ''}{' '} */}
                     </p>
                     <p className="text-muted-foreground">
                       Size: {product.size}
@@ -132,7 +138,7 @@ export default function CartPage() {
                     {/* Giá */}
                     <div>
                       <p>
-                        {product.isCustomized ? (
+                        {/* {product.isCustomized ? (
                           <>
                             Chỉ từ:{' '}
                             <span className="text-red">
@@ -142,13 +148,14 @@ export default function CartPage() {
                           </>
                         ) : (
                           <>
-                            Giá:{' '}
-                            <span className="text-red">
-                              {product.price * product.quantity}
-                            </span>{' '}
-                            đ
+                           
                           </>
-                        )}
+                        )} */}
+                        Giá:{' '}
+                        <span className="text-red">
+                          {product.unitPrice * product.quantity}
+                        </span>{' '}
+                        đ
                       </p>
                     </div>
 
@@ -191,10 +198,10 @@ export default function CartPage() {
           <div className="rounded-2xl bg-white p-4">
             <h1 className="font-bold">Tạm tính</h1>
             <p className="my-4 flex justify-between">
-              Tổng tiền ({products.length} sản phẩm):
+              Tổng tiền :
               <span className="text-bold text-red">
-                {products.reduce(
-                  (acc, cur) => acc + cur.price * cur.quantity,
+                {listProduct?.orderItemDetailModels?.reduce(
+                  (acc, cur) => acc + cur.unitPrice * cur.quantity,
                   0
                 )}{' '}
                 đ
