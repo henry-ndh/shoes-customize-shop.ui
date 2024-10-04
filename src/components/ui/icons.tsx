@@ -51,7 +51,8 @@ import {
   Mail,
   Trash2,
   DollarSign,
-  Receipt
+  Receipt,
+  LogOut
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -62,6 +63,7 @@ export const Icons = {
   trash2: Trash2,
   mail: Mail,
   mapPin: MapPin,
+  logOut: LogOut,
   handCoins: HandCoins,
   badgeCheck: BadgeCheck,
   dashboard: LayoutDashboardIcon,

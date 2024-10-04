@@ -50,6 +50,16 @@ export const useGetItemInCart = () => {
   });
 };
 
+export const useGetOrderConfirm = () => {
+  let model = { ...PagingModel, orderStatus: 2 };
+  return useQuery({
+    queryKey: ['get_order_confirm'],
+    queryFn: async () => {
+      return BaseRequest.Post(`/${SUB_URL}/filter-all-orders-by-status`, model);
+    }
+  });
+};
+
 export const useAddItemToCart = () => {
   return useMutation({
     mutationKey: ['add_item_to_cart'],

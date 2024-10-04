@@ -35,7 +35,7 @@ var BaseRequest = {
       console.log('err', err);
     }
   },
-  Post: async (url: string, data: any) => {
+  Post: async (url: string, data?: any) => {
     try {
       const response = await axios.post<any>(url, data);
       return response.data;
