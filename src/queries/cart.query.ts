@@ -1,6 +1,6 @@
 import BaseRequest from '@/config/axios.config';
 import { PagingModel } from '@/constants/data';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 
 const SUB_URL = `api/CheckOut`;
 
@@ -50,6 +50,15 @@ export const useGetItemInCart = () => {
   });
 };
 
+export const useGetOrderUserByStatus = () => {
+  return useMutation({
+    mutationKey: ['get_order_user_by_status'],
+    mutationFn: async (model: any) => {
+      return BaseRequest.Post(`/${SUB_URL}/get-all-orders-by-userId`, model);
+    }
+  });
+};
+
 export const useGetOrderConfirm = () => {
   let model = { ...PagingModel, orderStatus: 2 };
   return useQuery({
@@ -65,6 +74,15 @@ export const useAddItemToCart = () => {
     mutationKey: ['add_item_to_cart'],
     mutationFn: async (model: AddCartModel) => {
       return BaseRequest.Post(`/${SUB_URL}/add-item-to-order`, model);
+    }
+  });
+};
+
+export const useCreateUpdateOrderCustom = () => {
+  return useMutation({
+    mutationKey: ['create_update_order_custom'],
+    mutationFn: async (model: any) => {
+      return BaseRequest.Post(`/${SUB_URL}/create-update-order`, model);
     }
   });
 };

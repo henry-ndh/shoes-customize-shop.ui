@@ -200,7 +200,7 @@ export default function ShopPage() {
                           loading="lazy"
                           src={product.shoesImagesViewModels[0].thumbnail}
                           alt={product.name}
-                          className="h-[230px] w-full rounded-[5px] object-cover duration-500 hover:scale-105"
+                          className="h-[230px] w-full rounded-[5px] object-contain duration-500 hover:scale-105"
                         />
                       </Link>
                       <p className="mt-3 text-[12px] text-muted-foreground">

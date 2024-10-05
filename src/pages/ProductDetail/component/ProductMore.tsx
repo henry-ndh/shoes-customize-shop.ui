@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import ImgProduct from '@/assets/shoes/Product.jpg';
+import { useGetRandomShoes } from '@/queries/shoes.query';
+import { useRouter } from '@/routes/hooks';
 
 const listProduct = [
   {
@@ -32,48 +34,33 @@ const listProduct = [
 ];
 
 export const ProductMore = () => {
+  const { data: listShoes } = useGetRandomShoes();
+  const router = useRouter();
   return (
     <div className="">
       <div>
         <h1 className="mb-2 text-[18px]">Sản phẩm nổi bật</h1>
         <div className="grid h-1/2 grid-cols-4 gap-8">
-          {listProduct.map((product) => (
-            <div className="h-1/2 w-full" key={product.id}>
-              <a href="/product/1">
-                <img
-                  className="h-full w-full rounded-xl object-cover duration-300 hover:scale-105"
-                  src={product.image}
-                  alt={product.name}
-                />
-              </a>
-              <div className="mt-3">
-                <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
-                <p>{product.name}</p>
-                <p>{product.price}</p>
+          {listShoes &&
+            listShoes.length > 0 &&
+            listShoes.map((product) => (
+              <div className="h-1/2 w-full" key={product.id}>
+                <div onClick={() => router.push(`/product/${product.id}`)}>
+                  <img
+                    className="h-full w-full rounded-xl object-cover duration-300 hover:scale-105"
+                    src={product.shoesImagesViewModels[0].thumbnail}
+                    alt={product.name}
+                  />
+                </div>
+                <div className="mt-3">
+                  <p className="text-[14px] text-muted-foreground">
+                    BEST SELLER
+                  </p>
+                  <p>{product.name}</p>
+                  <p>{product.price}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <h1 className="mb-2 text-[18px]">Sản phẩm khác</h1>
-        <div className="grid h-1/2 grid-cols-4 gap-6">
-          {listProduct.map((product) => (
-            <div className="h-1/2 w-full" key={product.id}>
-              <Link to="/product/1">
-                <img
-                  className="h-full w-full rounded-xl object-cover duration-300 hover:scale-105"
-                  src={ImgProduct}
-                  alt={product.name}
-                />
-              </Link>
-              <div className="mt-3">
-                <p className="text-[14px] text-muted-foreground">BEST SELLER</p>
-                <p>{product.name}</p>
-                <p>{product.price}</p>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

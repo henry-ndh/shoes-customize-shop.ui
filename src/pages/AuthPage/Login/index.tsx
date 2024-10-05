@@ -27,11 +27,11 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     var token = helper.cookie_get('AT');
     if (token) {
       dispatch(login());
-      router.push('/');
+      window.location.href = '/';
     }
   }, []);
 
@@ -60,8 +60,7 @@ export default function LoginPage() {
         console.log(data);
         helper.cookie_set('AT', data.accessToken);
         dispatch(login());
-
-        router.push('/');
+        window.location.href = '/';
       }
     } catch (err) {
       setError({ password: 'Tên đăng nhập hoặc mật khẩu không đúng.' });

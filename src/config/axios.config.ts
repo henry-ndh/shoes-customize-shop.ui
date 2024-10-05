@@ -2,7 +2,7 @@ import axios from 'axios';
 import helpers from '../helpers';
 
 const baseURL = 'https://localhost:7093/';
-
+const token = helpers.cookie_get('AT');
 const onRequestSuccess = (config: any) => {
   config.headers['Authorization'] = `Bearer ${helpers.cookie_get('AT')}`;
   return config;
@@ -16,7 +16,6 @@ const onResponseSuccess = (response: any) => {
 const onResponseError = (error: any) => {
   if (error.response) {
     if (error.response.status === 401) {
-      window.location.href = '/login';
     }
     return Promise.reject(error.response.data);
   }
@@ -57,6 +56,27 @@ var BaseRequest = {
       return response.data;
     } catch (err) {
       console.log('err', err);
+    }
+  },
+  UploadStockPhoto: async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await axios.post(
+        'api/Image/upload-customize-photo',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            client: 'tfu_admin',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}) // Chỉ thêm Authorization nếu có token
+          }
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading stock photo:', error);
+      throw error; // Bắn lỗi ra ngoài để xử lý tại nơi sử dụng
     }
   }
 };

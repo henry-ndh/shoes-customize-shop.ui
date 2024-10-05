@@ -15,13 +15,16 @@ import {
   CreateCartModel,
   useAddItemToCart,
   useCreateCart,
-  useGetItemInCart
+  useGetItemInCart,
+  useGetOrderUserByStatus
 } from '@/queries/cart.query';
 import { useToast } from '@/components/ui/use-toast';
 import { useDispatch } from 'react-redux';
 import { updateCart } from '@/redux/cart.slice';
+import { updateCustom } from '@/redux/custom.slice';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { PagingModel } from '@/constants/data';
 
 const listGift = [
   'Tặng 1 đôi tất',
@@ -67,20 +70,20 @@ export default function ProductDetail() {
   // query here
   const { mutateAsync: createCart } = useCreateCart();
   const { mutateAsync: addItem } = useAddItemToCart();
-  const { refetch: getItemInCart } = useGetItemInCart();
+  const { mutateAsync: getItemInCart } = useGetOrderUserByStatus();
   // redux
   const cartObject = useSelector(
-    (state: RootState) => state.cart.cartDetail.listObjects
+    (state: RootState) => state.cart?.cartDetail?.listObjects
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isSuccess && detailShoes) {
       setProduct(detailShoes);
       setImagePicked(detailShoes.shoesImagesViewModels[0]);
     }
   }, [isSuccess, detailShoes]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     refetch();
   }, [id]);
 
@@ -116,15 +119,21 @@ export default function ProductDetail() {
       };
       await createCart(model);
     }
-    const res = await getItemInCart();
+    const model = { ...PagingModel, orderStatus: 1 };
+    const res = await getItemInCart(model);
     if (res) {
-      dispatch(updateCart(res.data));
+      dispatch(updateCart(res));
     }
     toast({
       variant: 'success',
       title: 'Thêm vào giỏ hàng thành công ',
       description: 'Sản phẩm đã được thêm vào giỏ hàng của bạn !'
     });
+  };
+
+  const handleCustomProduct = (product) => {
+    dispatch(updateCustom(product.name));
+    router.push(`/customize/${id}/${imagePicked?.id}`);
   };
 
   return (
@@ -141,19 +150,22 @@ export default function ProductDetail() {
         <div className="mx-auto  mt-3 grid w-full grid-cols-2 rounded-2xl bg-white p-6 ">
           <div className="grid grid-cols-[20%,80%] ">
             <div className="flex flex-col gap-4">
-              {product?.shoesImagesViewModels?.map((item) => (
-                <img
-                  key={item.id}
-                  src={item.thumbnail}
-                  alt="product"
-                  className={`h-[105px] w-[90px] rounded-xl p-1 transition-transform duration-300 hover:scale-105 ${
-                    item.id === imagePicked?.id
-                      ? 'border-[1.5px] border-yellow'
-                      : ''
-                  }`}
-                  onClick={() => setImagePicked(item)}
-                />
-              ))}
+              {product?.shoesImagesViewModels?.map(
+                (item) =>
+                  !item.isUserCustom && (
+                    <img
+                      key={item.id}
+                      src={item.thumbnail}
+                      alt="product"
+                      className={`h-[105px] w-[90px] rounded-xl p-1 transition-transform duration-300 hover:scale-105 ${
+                        item.id === imagePicked?.id
+                          ? 'border-[1.5px] border-yellow'
+                          : ''
+                      }`}
+                      onClick={() => setImagePicked(item)}
+                    />
+                  )
+              )}
             </div>
 
             {/* Product Image Picked */}
@@ -258,9 +270,7 @@ export default function ProductDetail() {
 
               <div className="mt-5 flex w-full flex-col gap-3">
                 <Button
-                  onClick={() =>
-                    router.push(`/customize/${id}/${imagePicked?.id}`)
-                  }
+                  onClick={() => handleCustomProduct(product)}
                   className="flex h-[56px] w-full flex-col items-center justify-center rounded-md bg-primary text-primary-foreground"
                 >
                   <p className="text-[16px]">Custom sản phẩm</p>

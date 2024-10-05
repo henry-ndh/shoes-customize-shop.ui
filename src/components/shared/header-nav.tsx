@@ -173,7 +173,7 @@ export default function HeaderNav({
           <>
             <Link to="/cart">
               <div className="font-sm flex gap-2 rounded-lg bg-yellow p-2 font-bold ">
-                {cart.listObjects[0]?.orderItemDetailModels.length}
+                {cart?.listObjects[0]?.orderItemDetailModels.length}
                 <Icons.shoppingCart className="" />
               </div>
             </Link>

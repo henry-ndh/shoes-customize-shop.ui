@@ -6,15 +6,16 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { useDispatch } from 'react-redux';
 import { updateCart, updateTotalItems } from '@/redux/cart.slice';
-import { useGetItemInCart } from '@/queries/cart.query';
-
+import { useGetOrderUserByStatus } from '@/queries/cart.query';
+import { PagingModel } from '@/constants/data';
 export default function DashboardLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const { data: cartData } = useGetItemInCart();
+  const { mutateAsync: getOrderByStatus } = useGetOrderUserByStatus();
+
   var token = helper.cookie_get('AT');
   const dispatch = useDispatch();
   useLayoutEffect(() => {
@@ -24,11 +25,14 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
-    if (token && cartData) {
-      dispatch(updateCart(cartData));
-      dispatch(updateTotalItems(cartData.listObjects.length));
-    }
-  }, [cartData]);
+    const fetch = async () => {
+      let model = { ...PagingModel, orderStatus: 1 };
+      var data = await getOrderByStatus(model);
+      dispatch(updateCart(data));
+      dispatch(updateTotalItems(data.listObjects.length));
+    };
+    fetch();
+  }, []);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-secondary ">

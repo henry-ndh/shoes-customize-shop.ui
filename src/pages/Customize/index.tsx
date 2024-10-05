@@ -9,8 +9,14 @@ import { useState, useRef, useEffect } from 'react';
 import * as fabric from 'fabric';
 import styled from 'styled-components';
 import IMGShirt from '@/assets/shoes/Product.jpg';
-import IMGShirtYellow from '@/assets/shirt_yellow.png';
-import IMGShirtRed from '@/assets/shirt_red.png';
+
+import AdidasG001 from '@/assets/shoes/AdidasG001.jpg';
+import AdidasG002 from '@/assets/shoes/AdidasG002.jpg';
+import AdidasG003 from '@/assets/shoes/AdidasG003.jpg';
+import JordanG001 from '@/assets/shoes/JordanG001.jpg';
+import JordanG002 from '@/assets/shoes/JordanG002.jpg';
+import JordanG003 from '@/assets/shoes/JordanG003.jpg';
+
 import { SketchPicker } from 'react-color';
 import { CongCu } from './MenuDetail';
 import { listMenuCustomize } from '@/constants/data';
@@ -18,14 +24,23 @@ import {
   UndoIcon,
   RedoIcon,
   ZoomInIcon,
-  ZoomOutIcon,
-  DeleteIcon
+  ZoomOutIcon
 } from '@/constants/SVGIcon';
 import { Input } from '@/components/ui/input';
 import { exportCanvasAsImage } from '@/helpers';
-import { useId } from '@/routes/hooks/use-id';
-import { useGetDetailShoesImage } from '@/queries/shoes.query';
+import { useGetDetailShoes } from '@/queries/shoes.query';
 import { useParams } from 'react-router-dom';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import OrderCustomize from './OrderCustomize';
 
 type StarPointsParams = {
   numPoints: number;
@@ -40,28 +55,62 @@ interface Point {
   y: number;
 }
 
+const listDataIMG = [
+  {
+    name: 'Adidas G001',
+    image: AdidasG001
+  },
+  {
+    name: 'Adidas G002',
+    image: AdidasG002
+  },
+  {
+    name: 'Adidas G003',
+    image: AdidasG003
+  },
+  {
+    name: 'Jordan G001',
+    image: JordanG001
+  },
+  {
+    name: 'Jordan G002',
+    image: JordanG002
+  },
+  {
+    name: 'Jordan G003',
+    image: JordanG003
+  }
+];
+
 export default function CustomizePage() {
   const canvaRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [color, setColor] = useState<string>('#ff0000');
+  const [selectedMenu, setSelectedMenu] = useState(0);
+  const [listImage, setListImage] = useState<string[]>([]);
   const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(
     null
   );
-  const [selectedMenu, setSelectedMenu] = useState(0);
-  const [listImage, setListImage] = useState<string[]>([]);
   const [detailCanvas, setDetailCanvas] = useState({
     xPosition: 0,
     yPosition: 0
   });
-  const id = useId();
-  const { data: dataImage } = useGetDetailShoesImage(id);
+  const { productId } = useParams();
   const [selectedImg, setSelectedImg] = useState<string>(IMGShirt);
+  const [openModal, setOpenModal] = useState(true);
+  // query
+  const { data: dataShoes } = useGetDetailShoes(String(productId));
 
   useEffect(() => {
-    if (dataImage) {
-      setSelectedImg(dataImage.thumbnail);
+    if (dataShoes) {
+      const shoes = listDataIMG.find((item) => item.name == dataShoes?.name);
+      if (shoes) {
+        setSelectedImg(shoes.image);
+      }
     }
-  }, [dataImage]);
+  }, [dataShoes]);
+
+  console.log('dataShoes', dataShoes);
 
   useEffect(() => {
     setDetailCanvas({
@@ -345,6 +394,13 @@ export default function CustomizePage() {
 
   return (
     <div className="flex h-screen w-full">
+      {dataShoes && (
+        <OrderCustomize
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          product={dataShoes}
+        />
+      )}
       {/* Left Toolbar */}
       <div className="flex w-[5%] flex-col items-center justify-between bg-[#18191b] py-4">
         <div className="grid w-full gap-2">
@@ -465,11 +521,10 @@ export default function CustomizePage() {
               </div> */}
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleExportCanvasAsImage}>
-                  Export
+                  Lưu và đặt hàng
                 </Button>
                 <Button
                   variant="outline"
-                  size="icon"
                   onClick={deleteSelectedObject}
                   disabled={!selectedObject}
                 >

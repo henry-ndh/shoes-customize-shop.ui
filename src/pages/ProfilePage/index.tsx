@@ -5,6 +5,7 @@ import { Icons } from '@/components/ui/icons';
 import { useGetInfoUser } from '@/queries/auth.query';
 import { useState } from 'react';
 import Order from './Order';
+import helper from '@/helpers/index';
 const ListMenu = [
   {
     id: 1,
@@ -59,6 +60,8 @@ export default function ProfilePage() {
       case 3:
         return <Order />;
       case 4:
+        helper.cookie_delete('AT');
+        window.location.href = '/login';
         return <h1>Đăng xuất</h1>;
       default:
         return <h1>Thông tin cá nhân</h1>;

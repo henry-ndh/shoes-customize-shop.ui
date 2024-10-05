@@ -1,9 +1,11 @@
 import BaseRequest from '@/config/axios.config';
 import { PagingModel } from '@/constants/data';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { ProductType } from '@/types';
+import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 
 const SUB_URL = `api/Shoes`;
 const SUB_URL_SHOES_IMAGES = `api/ShoesImages`;
+
 export const useGetListShoesByPaging = () => {
   return useMutation({
     mutationKey: ['get_shoes'],
@@ -17,7 +19,7 @@ export const useGetDetailShoes = (id: string) => {
   return useQuery({
     queryKey: ['get_detail_shoes'],
     queryFn: async () => {
-      return BaseRequest.Get(`/${SUB_URL}/get-shoes/${id}`);
+      return await BaseRequest.Get(`/${SUB_URL}/get-shoes/${id}`);
     }
   });
 };
@@ -45,6 +47,17 @@ export const useGetShoesByBrand = () => {
     mutationKey: ['get_shoes_by_brand'],
     mutationFn: async (model: any) => {
       return BaseRequest.Post(`/${SUB_URL}/filter-shoes-by-brand`, model);
+    }
+  });
+};
+
+type GetRandomShoesResponse = ProductType[];
+
+export const useGetRandomShoes = (): UseQueryResult<GetRandomShoesResponse> => {
+  return useQuery({
+    queryKey: ['get_random_shoes'],
+    queryFn: async () => {
+      return BaseRequest.Get(`/${SUB_URL}/get-random-4-shoes`);
     }
   });
 };
