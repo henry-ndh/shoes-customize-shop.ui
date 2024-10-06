@@ -15,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import ComboBoxFilter from '@/components/shared/combo-box-filter';
 import axios from 'axios';
 import BaseRequest from '@/config/axios.config';
+import { useCreateUpdateOrderCustom } from '@/queries/cart.query';
 
 const listSize = ['38', '39', '40', '41', '42', '43', '44'];
 
@@ -40,10 +41,10 @@ const listWarranty = [
 ];
 
 interface Product {
+  id: number;
   name: string;
   brandName: string;
   price: number;
-  // Add other necessary fields
 }
 
 interface TypeOrderCustomize {
@@ -73,10 +74,10 @@ export default function OrderCustomize({
     quantity: '1'
   });
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const { mutateAsync: createUpdateOrderCustom } = useCreateUpdateOrderCustom();
 
   const handleUpdateQuantity = (type: 'decrease' | 'increase') => {
     setFormData((prev) => {
@@ -109,49 +110,40 @@ export default function OrderCustomize({
     }));
   };
 
+  console.log('Product:', product);
+
   const handleSubmit = async () => {
     try {
-      const submissionData = new FormData();
-      submissionData.append('name', formData.name);
-      submissionData.append('phone', formData.phone);
-      submissionData.append('address', formData.address);
-      submissionData.append('detailAddress', formData.detailAddress);
-      submissionData.append('size', formData.sizePicked);
-      submissionData.append('quantity', formData.quantity);
-      if (selectedFile) {
-        submissionData.append('image', selectedFile);
-      }
+      const { name, phone, address, detailAddress, sizePicked, quantity } =
+        formData;
+      const model = {
+        note: name + '.' + phone,
+        shipAddress: address + '.' + detailAddress,
+        paymentMethod: 1,
+        shoesId: product.id,
+        quantity: parseInt(quantity),
+        size: sizePicked,
+        status: 2,
+        thumbnail: imageUrl
+      };
+      await createUpdateOrderCustom(model);
 
-      const response = await axios.post(
-        '/api/orders/customize',
-        submissionData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-
-      console.log('Order submitted successfully:', response.data);
-      // Reset form
-      setFormData({
-        name: '',
-        phone: '',
-        address: '',
-        detailAddress: '',
-        sizePicked: '39',
-        quantity: '1'
-      });
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      setImageUrl(null);
-      setOpenModal(false);
+      // setFormData({
+      //   name: '',
+      //   phone: '',
+      //   address: '',
+      //   detailAddress: '',
+      //   sizePicked: '39',
+      //   quantity: '1'
+      // });
+      // setSelectedFile(null);
+      // setPreviewUrl(null);
+      // setImageUrl(null);
+      // setOpenModal(false);
     } catch (error) {
       console.error('Error submitting order:', error);
-      // Optionally, set error state here to display to the user
     }
   };
-
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -165,7 +157,6 @@ export default function OrderCustomize({
       }
     } catch (err) {
       console.error('Upload error:', err);
-      // Optionally, set error state here to display to the user
     } finally {
       setUploading(false);
     }
@@ -184,11 +175,9 @@ export default function OrderCustomize({
       address: combinedAddress
     }));
   };
-
   const memoizedListWarranty = useMemo(() => listWarranty, []);
   const memoizedListGift = useMemo(() => listGift, []);
   const memoizedListSize = useMemo(() => listSize, []);
-
   return (
     <Dialog
       open={openModal}
@@ -395,12 +384,12 @@ export default function OrderCustomize({
             className="bg-yellow text-black"
             type="button"
             onClick={handleSubmit}
-            disabled={
-              !formData.name ||
-              !formData.phone ||
-              !formData.address ||
-              !formData.detailAddress
-            }
+            // disabled={
+            //   !formData.name ||
+            //   !formData.phone ||
+            //   !formData.address ||
+            //   !formData.detailAddress
+            // }
           >
             Gửi đơn đặt hàng
           </Button>

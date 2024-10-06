@@ -12,6 +12,15 @@ export const useLogin = () => {
   });
 };
 
+export const useRegister = () => {
+  return useMutation({
+    mutationKey: ['register'],
+    mutationFn: async (model: any) => {
+      return BaseRequest.Post(`/${SUB_URL}/register`, model);
+    }
+  });
+};
+
 export const useGetInfoUser = () => {
   return useQuery({
     queryKey: ['get_info_user'],
