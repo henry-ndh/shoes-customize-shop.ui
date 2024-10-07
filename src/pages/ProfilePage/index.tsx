@@ -27,7 +27,7 @@ const ListMenu = [
 export default function ProfilePage() {
   const [selectedMenu, setSelectedMenu] = useState(1);
   const { data: infoUser } = useGetInfoUser();
-  const { firstName, lastName, userName, email, phoneNumber } = infoUser || {};
+  const { firstName, lastName, email, phoneNumber } = infoUser || {};
 
   console.log(infoUser);
   const _renderMenu = () => {

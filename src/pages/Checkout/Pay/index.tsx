@@ -8,7 +8,7 @@ import { Policy } from './components/Policy';
 import Footer from '@/components/shared/footer';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UpdateOrderModel, useUpdateOrder } from '@/queries/cart.query';
 import { useToast } from '@/components/ui/use-toast';
 export default function CheckoutPay() {

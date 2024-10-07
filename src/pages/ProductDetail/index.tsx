@@ -1,7 +1,7 @@
 import BasePages from '@/components/shared/base-pages.js';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Policy } from './component/Policy';
 import { ProductMore } from './component/ProductMore';
 import Footer from '@/components/shared/footer';
@@ -15,7 +15,6 @@ import {
   CreateCartModel,
   useAddItemToCart,
   useCreateCart,
-  useGetItemInCart,
   useGetOrderUserByStatus
 } from '@/queries/cart.query';
 import { useToast } from '@/components/ui/use-toast';

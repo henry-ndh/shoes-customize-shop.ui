@@ -1,6 +1,6 @@
 import BaseRequest from '@/config/axios.config';
 import { PagingModel } from '@/constants/data';
-import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const SUB_URL = `api/CheckOut`;
 

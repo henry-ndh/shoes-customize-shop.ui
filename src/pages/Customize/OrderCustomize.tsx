@@ -13,7 +13,6 @@ import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import ComboBoxFilter from '@/components/shared/combo-box-filter';
-import axios from 'axios';
 import BaseRequest from '@/config/axios.config';
 import { useCreateUpdateOrderCustom } from '@/queries/cart.query';
 

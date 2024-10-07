@@ -153,7 +153,7 @@ export const Icons = {
   ),
   shoes: ({ ...props }: LucideProps) => (
     <svg
-      fill="#ffbf00"
+      fill="#000"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 462.68 462.68"

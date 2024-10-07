@@ -13,79 +13,13 @@ import { PagingModel } from '@/constants/data';
 import { ProductType } from '@/types';
 import { useGetAllBrands } from '@/queries/brand.query';
 
-const FilterPrice = [
-  {
-    id: 'price1',
-    title: 'Dưới 500.000đ',
-    value: '500000'
-  },
-  {
-    id: 'price2',
-    title: '500.000đ - 1.000.000đ',
-    value: '1000000'
-  },
-  {
-    id: 'price3',
-    title: '1.000.000đ - 2.000.000đ',
-    value: '2000000'
-  },
-  {
-    id: 'price4',
-    title: '2.000.000đ - 3.000.000đ',
-    value: '3000000'
-  },
-  {
-    id: 'price5',
-    title: 'Trên 3.000.000đ',
-    value: '310000'
-  }
-];
-
-const FilterProductType = [
-  {
-    id: 'type2',
-    title: 'Yordan',
-    value: 'Yordan'
-  },
-  {
-    id: 'type3',
-    title: 'Nike',
-    value: 'giay-tay'
-  },
-  {
-    id: 'type4',
-    title: 'Giày thể thao',
-    value: 'giay-the-thao'
-  },
-  {
-    id: 'type5',
-    title: 'Giày công sở',
-    value: 'giay-cong-so'
-  },
-  {
-    id: 'type6',
-    title: 'Giày bóng đá',
-    value: 'giay-bong-da'
-  },
-  {
-    id: 'type7',
-    title: 'Giày chạy bộ',
-    value: 'giay-chay-bo'
-  },
-  {
-    id: 'type8',
-    title: 'Giày sandal',
-    value: 'giay-sandal'
-  }
-];
-
 export default function ShopPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [listProduct, setListProduct] = useState<ProductType[]>([]);
-  const { mutateAsync: getListShoes, data, error } = useGetListShoesByPaging();
+  const { mutateAsync: getListShoes, error } = useGetListShoesByPaging();
   const [paging, setPaging] = useState<typeof PagingModel>({
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 10,
     keyword: '',
     orderBy: '',
     orderDirection: '',

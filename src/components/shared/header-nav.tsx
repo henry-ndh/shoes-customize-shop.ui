@@ -93,12 +93,12 @@ export default function HeaderNav({
                       }}
                     >
                       <Icon
-                        className={`size-5 ${index == 0 ? 'stroke-yellow' : index == 1 ? 'stroke-[#1ba6f9]' : 'stroke-[#f20e45]'}`}
+                        className={`size-5 ${index == 0 ? 'stroke-black' : index == 1 ? 'stroke-black' : 'stroke-[#000]'}`}
                       />
                       {isMobileNav || (!isMinimized && !isMobileNav) ? (
                         <div className="flex flex-col">
                           <span
-                            className={`${index == 0 ? 'text-yellow' : index == 1 ? 'text-[#1ba6f9]' : 'text-[#f20e45]'} truncate text-[14.5px]`}
+                            className={`${index == 0 ? 'text-000' : index == 1 ? 'text-[#000]' : 'text-[#000]'} truncate text-[14.5px]`}
                           >
                             {item.title}
                           </span>

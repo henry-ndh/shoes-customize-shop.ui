@@ -30,16 +30,6 @@ import { Input } from '@/components/ui/input';
 import { exportCanvasAsImage } from '@/helpers';
 import { useGetDetailShoes } from '@/queries/shoes.query';
 import { useParams } from 'react-router-dom';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
 import OrderCustomize from './OrderCustomize';
 
 type StarPointsParams = {
@@ -97,7 +87,7 @@ export default function CustomizePage() {
   });
   const { productId } = useParams();
   const [selectedImg, setSelectedImg] = useState<string>(IMGShirt);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   // query
   const { data: dataShoes } = useGetDetailShoes(String(productId));
 
@@ -168,6 +158,7 @@ export default function CustomizePage() {
         detailPosition: detailCanvas
       });
     }
+    setOpenModal(true);
   };
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,8 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  useGetOrderConfirm,
-  useGetOrderUserByStatus
-} from '@/queries/cart.query';
+import { useGetOrderUserByStatus } from '@/queries/cart.query';
 import { useEffect } from 'react';
 import { PagingModel } from '@/constants/data';
 import { useState } from 'react';
